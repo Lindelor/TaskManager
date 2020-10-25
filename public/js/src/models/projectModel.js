@@ -1,0 +1,59 @@
+import { Project } from "./entities/project.js"
+// Класс для операций над проектами
+class ProjectModel {
+    constructor() {
+        this.data = new Map();
+        this.data.set(0, new Project(0, "ProjectA", "A Bla-Bla"));
+        this.data.set(1, new Project(1, "ProjectB", "B Bla-Bla"));
+        this.data.set(2, new Project(2, "ProjectC", "C Bla-Bla"));
+        this.data.set(3, new Project(3, "ProjectD", "D Bla-Bla"));
+    }
+
+    getProjects() {
+        return new Promise((resolve, reject) => {
+            let projects = [];
+
+            for (let project of this.data.values()) {
+                projects.push(project);
+            }
+
+            resolve(projects);
+
+        })
+    }
+
+    getProjectById(id) {
+        return new Promise((resolve, reject) => {
+            resolve(this.data.get(id));
+        })
+    }
+
+    createProject(project) {
+
+        let id = Math.random()*1000000;
+        id = id - (id % 1);
+
+        while (this.data.get(id) !== null) {
+            let id = Math.random()*1000000;
+            id = id - (id % 1);
+        }
+
+        project.id = id;
+        this.data.set(id, project);
+        resolve(this.data.get(project.id));
+    }
+
+    updateProject(project) {
+        return new Promise((resolve, reject) => {
+            this.data.set(project.id, project)
+            resolve(this.data.get(project.id))
+        })
+    }
+
+    removeProject(projectId) {
+        this.data.delete(projectId);
+    }
+}
+
+let projectModel = new ProjectModel();
+export default projectModel;

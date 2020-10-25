@@ -1,0 +1,13 @@
+#tablePanel table {
+  display: inline-table;
+  width: 45%;
+}
+
+#t2 {
+  margin-left: 10%;
+}
+
+#sum {
+  text-align: right;
+  margin-right: 10%;
+}
