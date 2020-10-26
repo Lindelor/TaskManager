@@ -34,7 +34,7 @@ class TaskModel {
             let tasks = [];
 
             for (let entry of this.data.values()) {
-                if (entry.employeeid == employeeid) {
+                if (entry.employee == employeeid) {
                     tasks.push(entry);
                 }
             }

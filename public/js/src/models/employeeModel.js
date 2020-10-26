@@ -4,7 +4,7 @@ class EmployeeModel {
     constructor() {
         this.data = new Map();
         this.data.set(11, new Employee(11, "Ivan", "Ivanov", "Ivanovich", POSITION.manager, "834964843543", 11));
-        this.data.set(12, new Employee(12, "Sergey", "Petrov", "Sergeevich", POSITION.teamLead, "74386789347", 12))
+        this.data.set(12, new Employee(12, "Sergey", "Petrov", "Sergeevich", POSITION.teamLead, "74386789347", 12));
     }
 
     getEmployees() {

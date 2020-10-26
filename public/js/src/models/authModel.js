@@ -1,19 +1,28 @@
-import Model from "../../helpers/model.js";
+import {User} from './entities/user.js';
 
 // AuthModel объект для авторизации
-class AuthModel extends Model {
+class AuthModel{
+
     constructor() {
-        super()
+        this.data = new Map();
+        this.data.set(11, new User(11, "ivan90@mail.ru", 333));
+        this.data.set(12, new User(12, "sergey90@bk.ru", 111));
+        
     }
 
     // выход из учетной записи
     logout() {
-        return this.get('/user/logout')
+        return true;
     }
 
-    // плучение сотруднкиа текущего пользователя
-    getCurrentEmployee() {
-        return this.get('/user/employee')
+    // вход в учетную запись
+    login() {
+        return true;
+    }
+
+    // получение пользователя по ID
+    getUserById(id) {
+        return this.data.get(id);
     }
 }
 
