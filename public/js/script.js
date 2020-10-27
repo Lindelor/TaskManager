@@ -5,12 +5,19 @@ import {getUserTab} from './src/components/userTab.js';
 import employeeModel from './src/models/employeeModel.js';
 import authModel from './src/models/authModel.js';
 
-let currentUser = authModel.getUserById(12);
-let currentEmployee = employeeModel.getEmployeeById(12);
-currentEmployee.then((val) => {
-	let currentCells = [getUserTab(val, currentUser),
-		getProjectsTab(taskModel.getTasks(), val)];
+let currentUserPromise = authModel.getUserById(12);
+let currentEmployeePromise = employeeModel.getEmployeeById(12);
+let currentUser;
+export let currentEmployee;
 
-	webix.ui(getMainTab(val, currentUser, currentCells));
+
+currentEmployeePromise.then((val) => {
+	currentEmployee = val;
+	currentUserPromise.then((userVal) => {
+		currentUser = userVal;
+		let currentCells = [getUserTab(val, currentUser),
+			getProjectsTab(taskModel.getTasks(), val)];
+	
+		webix.ui(getMainTab(currentEmployee, currentUser, currentCells));
+	})
 })
-

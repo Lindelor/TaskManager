@@ -28,6 +28,7 @@ class ProjectModel {
     }
 
     createProject(project) {
+
         return new Promise((resolve, reject) => {
             let id = Math.random()*1000000;
             id = id - (id % 1);
@@ -35,6 +36,12 @@ class ProjectModel {
             while (this.data.get(id) != null) {
                 let id = Math.random()*1000000;
                 id = id - (id % 1);
+            }
+
+            for (let item of this.data.values()) {
+                if (project.name == item.name) {
+                    project.name = project.name + id;
+                }
             }
     
             project.id = id;

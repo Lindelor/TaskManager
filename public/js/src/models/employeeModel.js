@@ -7,6 +7,7 @@ class EmployeeModel {
         this.data.set(12, new Employee(12, "Sergey", "Petrov", "Sergeevich", POSITION.teamLead, "74386789347", 12));
     }
 
+    //Получение всех сотрудников
     getEmployees() {
         return new Promise((resolve, reject) => {
             let employees = [];
@@ -20,12 +21,48 @@ class EmployeeModel {
         })
     }
 
+    //Получение массива из id + ФИО сотрудников
+    getEmployeesIdFIO() {
+        return new Promise((resolve, reject) => {
+            let employees = [];
+
+            for (let employee of this.data.values()) {
+                let patronymic;
+                if (employee.patronymic == null || employee.patronymic == '') {
+                    patronymic = '';
+                } else {
+                    patronymic = employee.patronymic;
+                }
+                employees.push(employee.id + ' ' + employee.lastName  + ' ' + employee.firstName + ' ' + patronymic);
+            }
+
+            resolve(employees);
+
+        })
+    }
+
+    //Получение сотрудника из ID+FIO
+    getEmployeeByIdFIO(FIO) {
+        let id = '';
+        for (let i = 0; i < FIO.length; i++) {
+          if (FIO[i] == ' ') {
+            break;
+          } else {
+            id += FIO[i];
+          }
+        }
+
+        return this.getEmployeeById(id);
+    }
+
+    //Получение сотрудника по его id
     getEmployeeById(id) {
         return new Promise((resolve, reject) => {
             resolve(this.data.get(id));
         })
     }
 
+    //Создание сотрудника
     createEmployee(employee) {
         return new Promise((resolve, reject) => {
             let id = Math.random()*1000000;
@@ -43,6 +80,7 @@ class EmployeeModel {
         })
     }
 
+    //Изменение сотрудника
     updateEmployee(employee) {
         return new Promise((resolve, reject) => {
             this.data.set(employee.id, employee)
@@ -50,10 +88,12 @@ class EmployeeModel {
         })
     }
 
+    //Удаление сотрудника
     removeEmployee(employeeId) {
         this.data.delete(employeeId);
     }
 
+    //Получение должностей
     getPositions() {
         let positions = [];
 

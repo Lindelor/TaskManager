@@ -1,12 +1,13 @@
 import {Task, TASK_STATUS, URGENCY} from "./entities/task.js"
+
 //Класс операций над задачами
 class TaskModel {
     constructor() {
         this.data = new Map();
-        this.data.set(1, new Task(1, "TaskA", "Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1", 0, 2, '', TASK_STATUS.haveEmployee, 11, URGENCY.ASAP));
-        this.data.set(2, new Task(2, "TaskB", "Bla-bla-bla2", 0, 5, '', TASK_STATUS.haveEmployee, 11, URGENCY.Low));
-        this.data.set(3, new Task(3, "TaskC", "Bla-bla-bla3", 1, 8, '', TASK_STATUS.inProgress, 11, URGENCY.Low));
-        this.data.set(4, new Task(4, "TaskD", "Bla-bla-bla4", 1, 2, 3, TASK_STATUS.done, 12, URGENCY.NVM));
+        this.data.set(1, new Task(1, "TaskA", "Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1", "ProjectA", 0, 2, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.ASAP));
+        this.data.set(2, new Task(2, "TaskB", "Bla-bla-bla2", "ProjectA", 0, 5, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
+        this.data.set(3, new Task(3, "TaskC", "Bla-bla-bla3", "ProjectB", 1, 8, '', TASK_STATUS.inProgress, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
+        this.data.set(4, new Task(4, "TaskD", "Bla-bla-bla4", "ProjectB", 1, 2, 3, TASK_STATUS.done, '12' + ' Petrov Sergey Sergeevich', URGENCY.NVM));
     }
 	
 	// поолучение всех тасков
@@ -29,12 +30,12 @@ class TaskModel {
     }
 
     //получение всех таск сотрудника
-    getEmployeeTasks(employeeid) {
+    getEmployeeTasks(employeeIdFIO) {
         return new Promise((resolve, reject) => {
             let tasks = [];
 
             for (let entry of this.data.values()) {
-                if (entry.employee == employeeid) {
+                if (entry.employee == employeeIdFIO) {
                     tasks.push(entry);
                 }
             }
@@ -43,12 +44,28 @@ class TaskModel {
         })
     }
 
+    //Получение тасок по id проекта
     getTaskByProjectId(projectId) {
         return new Promise((resolve, reject) => {
             let tasks = [];
 
             for (let entry of this.data.values()) {
                 if (entry.projectId == projectId) {
+                    tasks.push(entry);
+                }
+            }
+
+            resolve(tasks);
+        })
+    }
+
+    //Получение тасок по имени проекта
+    getTaskByProjectName(projectName) {
+        return new Promise((resolve, reject) => {
+            let tasks = [];
+
+            for (let entry of this.data.values()) {
+                if (entry.projectName == projectName) {
                     tasks.push(entry);
                 }
             }
@@ -87,7 +104,7 @@ class TaskModel {
         this.data.delete(employeeId);
     }
 
-    
+    //Получение массива статусов
     getTaskStatuses() {
         return new Promise((resolve, reject) => {
             let statuses = [];
@@ -100,7 +117,7 @@ class TaskModel {
         })
     }
 
-    
+    //Получение массива срочностей
     getTaskUrgencies() {
         return new Promise((resolve, reject) => {
             let urgencies = [];

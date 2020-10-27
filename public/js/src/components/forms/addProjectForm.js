@@ -13,10 +13,10 @@ export default function getProjectForm() {
 		body:{
 			view:"form", 
 			id:"addProjectForm",
-			width:400,
+			width:700,
 			elements:[
 				{ view:"text", label:"Название", name:"addProjectName", invalidMessage:"Поле не должно быть пустым"},
-				{ view:"text", label:"Описание", name:"addProjectDescription", invalidMessage:"Поле не должно быть пустым"},
+				{ view:"textarea", label:"Описание", name:"addProjectDescription", invalidMessage:"Поле не должно быть пустым", height: 150},
 				{ margin:5, cols:[
 					{ view:"button", value:"Создать" , css:"webix_primary", click:saveProject},
 					{ view:"button", value:"Отменить" , css:"webix_primary", click:discard},
@@ -39,6 +39,7 @@ export default function getProjectForm() {
 )
 }
 
+//Сохранение проекта
 let saveProject = function() {
     let newValue = $$("addProjectForm").getValues();
     if ($$("addProjectForm").validate()) {

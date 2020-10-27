@@ -1,10 +1,11 @@
 //Task - класс для представления сущности задачи.
 export class Task {
-    constructor(id, name, description, projectid, estimated, end, status, employee, urgency) {
+    constructor(id, name, description, projectName, projectId, estimated, end, status, employee, urgency) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.projectid = projectid;
+		this.projectName = projectName;
+		this.projectId = projectId;
 		this.estimated = estimated;
 		this.end = end;
 		this.status = status;

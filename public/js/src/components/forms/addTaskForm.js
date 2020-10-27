@@ -1,6 +1,7 @@
 import taskModel from '../../models/taskModel.js';
 import {Task, TASK_STATUS} from '../../models/entities/task.js';
 import projectModel from '../../models/projectModel.js';
+import {refreshTables} from '../projectsTab.js';
 
 //Возвращает и показывает форму создания задачи
 export default function getTaskForm() {
@@ -16,10 +17,10 @@ export default function getTaskForm() {
                 body:{
                     view:"form", 
                     id:"addTaskForm",
-                    width:400,
+                    width:700,
                     elements:[
                         { view:"text", label:"Название", name:"addTaskName", invalidMessage:"Поле не должно быть пустым"},
-                        { view:"text", label:"Описание", name:"addTaskDescription", invalidMessage:"Поле не должно быть пустым"},
+                        { view:"textarea", label:"Описание", name:"addTaskDescription", invalidMessage:"Поле не должно быть пустым", height: 150},
                         { view:"select", options:urgencies, label:"Срочность", name:"addTaskUrgency"},
                         { view:"select", options:names, label:"Проект", name:"addTaskProject"},
                         { margin:5, cols:[
@@ -50,9 +51,10 @@ let saveChange = function () {
     let newValue = $$("addTaskForm").getValues();
     if ($$("addTaskForm").validate()) {
         projectModel.getProjectByName(newValue.addTaskProject).then((finalProject) => {
-            let task = new Task(0, newValue.addTaskName, newValue.addTaskDescription, finalProject.id, '', '', TASK_STATUS.fresh, '', newValue.addTaskUrgency);
+            let task = new Task(0, newValue.addTaskName, newValue.addTaskDescription, finalProject.name, finalProject.id, '', '', TASK_STATUS.fresh, '', newValue.addTaskUrgency);
             taskModel.createTask(task);
             $$("addTaskWindow").close();
+            refreshTables();
         })
     }
 };

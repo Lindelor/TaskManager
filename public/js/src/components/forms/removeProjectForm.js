@@ -1,4 +1,5 @@
 import projectModel from '../../models/projectModel.js';
+import {refreshTables} from '../projectsTab.js';
 
 //Возвращает и показывает форму удаления проекта
 export default function getRemoveProjectForm() {
@@ -36,6 +37,7 @@ let deleteProject = function() {
     projectModel.getProjectByName(projectName).then((result) => {
         projectModel.removeProject(result.id);
         $$("removeProjectWindow").close();
+        refreshTables();
     })
 
 };

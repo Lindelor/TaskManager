@@ -26,7 +26,9 @@ class AuthModel{
 
     // получение пользователя по ID
     getUserById(id) {
-        return this.data.get(id);
+        return new Promise((resolve, reject) => {
+            resolve(this.data.get(id));
+        })
     }
 }
 
