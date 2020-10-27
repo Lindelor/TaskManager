@@ -2,6 +2,7 @@ import {Employee, POSITION} from '../models/entities/employee.js';
 import showTask from './taskWindow.js';
 import taskModel from '../models/taskModel.js';
 
+
 // возвращает webix конфигурацию таба проектов
 export function getProjectsTab(taskData, currentUser) {
 	if (currentUser.position == POSITION.teamLead) {

@@ -37,6 +37,7 @@ class EmployeeModel {
             }
     
             employee.id = id;
+            employee.userId = id;
             this.data.set(id, employee);
             resolve(this.data.get(employee.id));
         })

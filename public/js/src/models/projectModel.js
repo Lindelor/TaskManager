@@ -18,7 +18,6 @@ class ProjectModel {
             }
 
             resolve(projects);
-
         })
     }
 
@@ -29,24 +28,51 @@ class ProjectModel {
     }
 
     createProject(project) {
-
-        let id = Math.random()*1000000;
-        id = id - (id % 1);
-
-        while (this.data.get(id) !== null) {
+        return new Promise((resolve, reject) => {
             let id = Math.random()*1000000;
             id = id - (id % 1);
-        }
-
-        project.id = id;
-        this.data.set(id, project);
-        resolve(this.data.get(project.id));
+    
+            while (this.data.get(id) != null) {
+                let id = Math.random()*1000000;
+                id = id - (id % 1);
+            }
+    
+            project.id = id;
+            this.data.set(id, project);
+            resolve(this.data.get(project.id));
+        })
     }
 
     updateProject(project) {
         return new Promise((resolve, reject) => {
             this.data.set(project.id, project)
             resolve(this.data.get(project.id))
+        })
+    }
+
+    getProjectsNames() {
+        return new Promise((resolve, reject) => {
+            let projects = [];
+
+            for (let project of this.data.values()) {
+                projects.push(project.name);
+            }
+
+            resolve(projects);
+
+        })
+    }
+
+    getProjectByName(projectName) {
+        return new Promise((resolve, reject) => {
+            let project;
+
+            for (let project of this.data.values()) {
+                if (project.name == projectName) {
+                    resolve (project);
+                }
+            }
+
         })
     }
 

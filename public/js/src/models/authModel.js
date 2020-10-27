@@ -10,6 +10,10 @@ class AuthModel{
         
     }
 
+    createUser(user) {
+        this.data.set(user.id, user);
+    }
+
     // выход из учетной записи
     logout() {
         return true;

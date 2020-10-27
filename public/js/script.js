@@ -13,3 +13,4 @@ currentEmployee.then((val) => {
 
 	webix.ui(getMainTab(val, currentUser, currentCells));
 })
+
