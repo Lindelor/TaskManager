@@ -43,7 +43,7 @@ export function getProjectsTab(taskData, currentUser) {
 
 function fullProjectTab(taskData, currentUser) {
     return (
-		{id: 'projectsTab', header: 'Задачи', view:'datatable', resizeRow:true, columns:[
+		{id: 'projectsTab', header: 'Задачи', view:'datatable', columns:[
 		{ id:"id", header:["ID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
 		{ id:"name", header:["Имя", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
 		{ id:"projectName", header:["Проект", {content:"selectFilter"}], css:"rank", sort:"int", width:100},
@@ -61,7 +61,7 @@ function fullProjectTab(taskData, currentUser) {
 
 function limitedProjectTab(taskData, currentUser) {
 		return (
-			{id: 'projectsTab', header: 'Задачи', view:'datatable', resizeRow:true, columns:[
+			{id: 'projectsTab', header: 'Задачи', view:'datatable', columns:[
 			{ id:"id", header:["ID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
 			{ id:"name", header:["Имя", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
 			{ id:"projectName", header:["Проект", {content:"selectFilter"}], css:"rank", sort:"int", width:100},

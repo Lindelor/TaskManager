@@ -94,14 +94,20 @@ class TaskModel {
 	// изменение таска
     updateTask(task) {
         return new Promise((resolve, reject) => {
-            this.data.set(task.id, task)
-            resolve(this.data.get(task.id))
+            let old = this.data.get(task.id);
+            if (old.status == TASK_STATUS.reconciliation && task.status == TASK_STATUS.fresh) {
+                task.status = TASK_STATUS.fresh;
+                task.end = '';
+                task.estimated = '';
+            } 
+            this.data.set(task.id, task);
+            resolve(this.data.get(task.id));
         })
     }
 	
 	// удаление Таска
-    deleteTask(task) {
-        this.data.delete(employeeId);
+    deleteTask(taskId) {
+        this.data.delete(taskId);
     }
 
     //Получение массива статусов
