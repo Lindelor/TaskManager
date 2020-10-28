@@ -45,7 +45,7 @@ function fullProjectTab(taskData, currentUser) {
     return (
 		{id: 'projectsTab', header: 'Задачи', view:'datatable', columns:[
 		{ id:"id", header:["ID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
-		{ id:"name", header:["Имя", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
+		{ id:"name", header:["Название", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
 		{ id:"projectName", header:["Проект", {content:"selectFilter"}], css:"rank", sort:"int", width:100},
 		{ id:"estimated", header:["Пред. Время", {content:"textFilter"}], editor:"text", css:"rank", sort:"int", width:170},
 		{ id:"urgency", header:["Срочность", {content:"selectFilter"}], css:"rank", sort:"string", width:100},
@@ -63,7 +63,7 @@ function limitedProjectTab(taskData, currentUser) {
 		return (
 			{id: 'projectsTab', header: 'Задачи', view:'datatable', columns:[
 			{ id:"id", header:["ID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
-			{ id:"name", header:["Имя", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
+			{ id:"name", header:["Название", {content:"textFilter"}], css:"rank", sort:"string", fillspace:true},
 			{ id:"projectName", header:["Проект", {content:"selectFilter"}], css:"rank", sort:"int", width:100},
 			{ id:"estimated", header:["Пред. Время", {content:"textFilter"}], editor:"text", css:"rank", sort:"int", width:170},
 			{ id:"urgency", header:["Срочность", {content:"selectFilter"}], css:"rank", sort:"string", width:100},

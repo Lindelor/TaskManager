@@ -1,5 +1,7 @@
 import projectModel from '../../models/projectModel.js';
 import {Project} from '../../models/entities/project.js';
+import { refreshInfoTab } from '../infoTab.js';
+
 
 //Возвращает и показывает форму создания проекта
 export default function getProjectForm() {
@@ -45,7 +47,8 @@ let saveProject = function() {
     if ($$("addProjectForm").validate()) {
         let project = new Project(0, newValue.addProjectName, newValue.addProjectDescription);
         projectModel.createProject(project).then((val) => {
-            $$("addProjectWindow").close();
+			$$("addProjectWindow").close();
+			refreshInfoTab();
         });
                 
     }
