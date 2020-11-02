@@ -3,6 +3,7 @@ import getRegisterForm from './forms/registerForm.js';
 import getTaskForm from './forms/addTaskForm.js';
 import getProjectForm from './forms/addProjectForm.js';
 import getRemoveProjectForm from './forms/removeProjectForm.js';
+import CTaskCreateWindow from './Tasks/CTaskCreateWindow.js';
 
 //Возвращает конфигурацию основного окна, требует пользователя и ячейки для мультивью
 export function getMainTab(employee, user, cells) {
@@ -14,12 +15,16 @@ export function getMainTab(employee, user, cells) {
 }
 
 function getFullTab(user, cells) {
+
 	return {
 		rows: [
 
 			{
 				cols: [
-					{view: 'button', id: 'addTask', value:"Создать задачу", width:200, click:function(){getTaskForm()}},
+					{view: 'button', id: 'addTask', value:"Создать задачу", width:200, click:function(){
+						let taskCreateWindow = new CTaskCreateWindow();
+						taskCreateWindow.init();
+						taskCreateWindow.attachEvents();}},
 					{view: 'button', id: 'addProject', value:"Создать проект", width:200, click:function(){getProjectForm()}},
 					{view: 'button', id: 'removeProject', value:"Удалить проект", width:200, click:function(){getRemoveProjectForm()}},
 					{view: 'button', id: 'registerUser', value:"Зарегистрировать", width:200, click:function(){getRegisterForm()}},

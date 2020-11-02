@@ -88,5 +88,5 @@ class ProjectModel {
     }
 }
 
-let projectModel = new ProjectModel();
+const projectModel = new ProjectModel();
 export default projectModel;
