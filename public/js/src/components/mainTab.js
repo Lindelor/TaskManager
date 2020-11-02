@@ -37,8 +37,10 @@ function getFullTab(user, cells) {
 
 function taskCreate() {
 	let taskCreateWindow = new CTaskCreateWindow();
+	console.log(taskCreateWindow);
 	taskCreateWindow.init();
-	taskCreateWindow.config().show();
+	console.log(taskCreateWindow.config());
+	taskCreateWindow.attachEvents();
 }
 
 function getLimitedTab(user, cells) {
