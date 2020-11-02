@@ -21,10 +21,7 @@ function getFullTab(user, cells) {
 
 			{
 				cols: [
-					{view: 'button', id: 'addTask', value:"Создать задачу", width:200, click:function(){
-						let taskCreateWindow = new CTaskCreateWindow();
-						taskCreateWindow.init();
-						taskCreateWindow.attachEvents();}},
+					{view: 'button', id: 'addTask', value:"Создать задачу", width:200, click:taskCreate},
 					{view: 'button', id: 'addProject', value:"Создать проект", width:200, click:function(){getProjectForm()}},
 					{view: 'button', id: 'removeProject', value:"Удалить проект", width:200, click:function(){getRemoveProjectForm()}},
 					{view: 'button', id: 'registerUser', value:"Зарегистрировать", width:200, click:function(){getRegisterForm()}},
@@ -36,6 +33,12 @@ function getFullTab(user, cells) {
 			{view:"tabview", multiview:true, cells: cells}
 		],
 	}
+}
+
+function taskCreate() {
+	let taskCreateWindow = new CTaskCreateWindow();
+	taskCreateWindow.init();
+	taskCreateWindow.config().show();
 }
 
 function getLimitedTab(user, cells) {

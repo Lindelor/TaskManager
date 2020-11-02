@@ -6,20 +6,20 @@ import projectModel from '../../models/projectModel.js';
 export default class CTaskCreateWindow {
     constructor() {
         this.view
+        this.kek
     }
 
     init() { 
 
-        projectModel.getProjectsNames().then((projectsNames) => {
-            taskModel.getTaskUrgencies().then((urgencies) => {
-                return getCreateTaskWindowView(projectsNames, urgencies).show();
-
-            })
-        })
-
     }
 
     config() {
+        projectModel.getProjectsNames().then((projectsNames) => {
+            taskModel.getTaskUrgencies().then((urgencies) => {
+                return getCreateTaskWindowView(projectsNames, urgencies);
+
+            })
+        })
     }
 
     attachEvents() {
