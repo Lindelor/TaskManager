@@ -1,6 +1,6 @@
 import getCreateTaskWindowView from './TaskCreateWindow.js';
 import taskModel from '../../models/taskModel.js';
-import {Task} from '../../models/entities/task.js';
+import {Task, TASK_STATUS} from '../../models/entities/task.js';
 import projectModel from '../../models/projectModel.js';
 
 export default class CTaskCreateWindow {
@@ -12,12 +12,8 @@ export default class CTaskCreateWindow {
 
     }
 
-    config() {
-        projectModel.getProjectsNames().then((projectsNames) => {
-            taskModel.getTaskUrgencies().then((urgencies) => {
-                return getCreateTaskWindowView(projectsNames, urgencies);
-            })
-        })
+    config(projectsNames, urgencies) {
+        webix.ui(getCreateTaskWindowView(projectsNames, urgencies)).show();
     }
 
     attachEvents() {
@@ -37,8 +33,11 @@ export default class CTaskCreateWindow {
 
                 projectModel.getProjectByName(val.addTaskProject).then((finalProject) => {
                     let task = new Task(0, val.addTaskName, val.addTaskDescription, finalProject.name, finalProject.id, '', '', TASK_STATUS.fresh, '', val.addTaskUrgency);
-                    taskModel.createTask(task);
-                    this.view.window.hide();
+                    taskModel.createTask(task).then((result) => {
+                        this.refreshTable();
+                    });
+                    this.view.form.clear();
+                    this.view.window.close();
                 })
 
             }            
@@ -46,7 +45,7 @@ export default class CTaskCreateWindow {
 
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
-            this.view.window.hide();
+            this.view.window.close();
         })
     }
 
@@ -69,5 +68,13 @@ export default class CTaskCreateWindow {
         }
 
         return false;
+    }
+
+    refreshTable() {
+        taskModel.getTasks().then((res) => {
+            $$("tasksTable").clearAll();
+            $$("tasksTable").parse(res);
+            $$("tasksTable").refreshFilter();
+        })
     }
 }

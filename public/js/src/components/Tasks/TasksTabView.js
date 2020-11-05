@@ -27,4 +27,4 @@ let cells = [
     { id:"end", header:["Факт. время", {content:"textFilter"}], css:"rank", sort:"int", width:130},
     { id:"status", header:["Статус", {content:"selectFilter"}], css:"rank", sort:"string", width:160}];
 
-let employeeCell = { id:"employee", header:["Сотрудник", {content:"textFilter"}], css:"rank", sort:"string", width:100};
+let employeeCell = { id:"employee", header:["Сотрудник", {content:"textFilter"}], css:"rank", sort:"string", width:200};

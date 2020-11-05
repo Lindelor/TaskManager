@@ -10,8 +10,8 @@ export default class CProjectCreateWindow {
     init() { 
     }
 
-    config() {
-        return this.getProjectCreateWindow();
+    config(teamLeadsIDFIO) {
+        webix.ui(getProjectCreateWindow(teamLeadsIDFIO)).show();
     }
 
     attachEvents() {
@@ -29,16 +29,18 @@ export default class CProjectCreateWindow {
             
             if(this.validation(val)) {               
 
-                let project = new Project(0, val.addProjectName, val.addProjectDescription);
-                projectModel.createProject(project);
-                this.view.form.clear();
-                this.view.window.hide();
+                let project = new Project(0, val.addProjectName, val.addProjectDescription, val.addProjectTeamLead);
+                projectModel.createProject(project).then((result) => {
+                    this.view.form.clear();
+                    this.view.window.close();
+                    this.refreshTable();
+                })
             }            
         })
 
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
-            this.view.window.hide();
+            this.view.window.close();
         })
     }
 
@@ -61,5 +63,15 @@ export default class CProjectCreateWindow {
         }
 
         return false;
+    }
+
+    refreshTable() {
+
+        projectModel.getProjects().then((result) => {
+            $$('projectsTable').clearAll();
+            $$('projectsTable').parse(result);
+            $$('projectsTable').refreshFilter();
+        })
+
     }
 }

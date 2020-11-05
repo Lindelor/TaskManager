@@ -95,11 +95,33 @@ class TaskModel {
     updateTask(task) {
         return new Promise((resolve, reject) => {
             let old = this.data.get(task.id);
-            if (old.status == TASK_STATUS.reconciliation && task.status == TASK_STATUS.fresh) {
-                task.status = TASK_STATUS.fresh;
+            if (old.status == TASK_STATUS.reconciliation) {
+                task.status = TASK_STATUS.haveEmployee;
                 task.end = '';
                 task.estimated = '';
-            } 
+            } else if(old.status == TASK_STATUS.fresh) {
+                task.status = TASK_STATUS.haveEmployee;
+                task.end = '';
+                task.estimated = '';
+            } else if (old.status == TASK_STATUS.haveEmployee) {
+                if (task.status == old.status) {
+                    task.status = TASK_STATUS.inProgress;
+                    task.end = '';
+                } else {
+                    task.status = TASK_STATUS.reconciliation;
+                }
+            } else if (old.status == TASK_STATUS.inProgress) {
+                if (task.status == old.status) {
+                    task.status = TASK_STATUS.done;
+                } else {
+                    task.status = TASK_STATUS.reconciliation;
+                }
+            } else {
+                task.status = TASK_STATUS.haveEmployee;
+                task.end = '';
+                task.estimated = '';
+            }
+            
             this.data.set(task.id, task);
             resolve(this.data.get(task.id));
         })
@@ -107,7 +129,10 @@ class TaskModel {
 	
 	// удаление Таска
     deleteTask(taskId) {
-        this.data.delete(taskId);
+        return new Promise((resolve, reject) => {
+            this.data.delete(taskId);
+            resolve(taskId);
+        });
     }
 
     //Получение массива статусов
