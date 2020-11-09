@@ -13,7 +13,7 @@ export default class CTaskCreateWindow {
     }
 
     config(projectsNames, urgencies) {
-        webix.ui(getCreateTaskWindowView(projectsNames, urgencies)).show();
+        return webix.ui(getCreateTaskWindowView(projectsNames, urgencies));
     }
 
     attachEvents() {
@@ -58,10 +58,10 @@ export default class CTaskCreateWindow {
         let descr = task.addTaskDescription;
         
         if (name == '') {
-            webix.message("Укажите название задачи!");
+            webix.message({type:"error", text:"Укажите название задачи!"});
         } else {
             if (descr == '') {
-                webix.message("Заполните описание задачи!");
+                webix.message({type:"error", text:"Заполните описание задачи!"});
             } else {
                 return true;
             }

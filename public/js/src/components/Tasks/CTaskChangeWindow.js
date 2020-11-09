@@ -121,7 +121,7 @@ export default class CTaskChangeWindow {
         if (status == TASK_STATUS.fresh || status == TASK_STATUS.reconciliation) {
 
             if (description == '') {
-                webix.message('Заполните описание!');
+                webix.message({type:"error", text:'Заполните описание!'});
                 return false;
             }
 
@@ -130,12 +130,12 @@ export default class CTaskChangeWindow {
         } else if (status == TASK_STATUS.haveEmployee) {
 
             if (description == '') {
-                webix.message('Заполните описание!');
+                webix.message({type:"error", text:'Заполните описание!'});
                 return false;
             }
 
             if (estimated == '' || isNaN(Number(estimated)) || Number(estimated) <= 0) {
-                webix.message('Укажите плановые часы!');
+                webix.message({type:"error", text:'Укажите плановые часы!'});
                 return false;
             }
 
@@ -144,24 +144,24 @@ export default class CTaskChangeWindow {
         } else if (status == TASK_STATUS.inProgress) {
 
             if (description == '') {
-                webix.message('Заполните описание!');
+                webix.message({type:"error", text:'Заполните описание!'});
                 return false;
             }
 
             if (estimated == '' || isNaN(Number(estimated)) || Number(estimated) <= 0) {
-                webix.message('Укажите плановые часы!');
+                webix.message({type:"error", text:'Укажите плановые часы!'});
                 return false;
             }
 
             if (end == '' || isNaN(Number(end)) || Number(end) <= 0) {
-                webix.message('Укажите фактические часы!')
+                webix.message({type:"error", text:'Укажите фактические часы!'})
                 return false;
             }
 
         } else if (status == TASK_STATUS.done) {
 
             if (description == '') {
-                webix.message('Заполните описание!');
+                webix.message({type:"error", text:'Заполните описание!'});
                 return false;
             }
 

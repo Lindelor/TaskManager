@@ -6,6 +6,14 @@ export default function getChangeProjectWindow(project, currentEmployee, teamLea
     }
 
     let cells = [conBtn, remBtn, cancelBtn];
+    let empData = project.employees;
+
+    let empTable = { view:"datatable", columns:[
+        { id:"id", header:"ID", css:"rank", sort:"int", width:50},
+        { id:"firstName", header:"Имя", css:"rank", sort:"string", fillspace:true},
+        { id:"lastName", header:"Фамилия", css:"rank", sort:"string", fillspace:true},
+        { id:"position", header:"Должность", css:"rank", sort:"string", fillspace:true},
+    ], data:empData, height:150};
 
     return {
         view:"window",
@@ -16,11 +24,13 @@ export default function getChangeProjectWindow(project, currentEmployee, teamLea
         body:{
             view:"form", 
             id:"projectChangeForm",
-            width:600,
+            width:900,
             elements:[
                 { view:"text", label:"ID", name:"projectChangeId", value:project.id, labelWidth:120, readonly:true},
                 { view:"textarea", label:"Описание", name:"projectChangeDescription", value:project.description, height: 120, labelWidth:120},
-                { view:"select", label:"teamLead", name:"projectChangeTeamLead", options:teamLeadsIdFIO, value:project.teamLeadIdFIO, labelWidth:120},
+                { view:"select", label:"ТимЛид", name:"projectChangeTeamLead", options:teamLeadsIdFIO, value:project.teamLeadIdFIO, labelWidth:120},
+                { view:"template", template:"Сотрудники", type:"header"},
+                empTable,
                 { margin:5, cols:cells}
             ], 
             elementsConfig:{

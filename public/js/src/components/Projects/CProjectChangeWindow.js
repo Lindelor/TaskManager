@@ -64,7 +64,7 @@ export default class CProjectChangeWindow {
 
     validateProject(project) {
         if (project.description == '') {
-            webix.message("Заполните описание!");
+            webix.message({type:"error", text:"Заполните описание!"});
             return false;
         }
 

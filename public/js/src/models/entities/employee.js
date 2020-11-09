@@ -1,6 +1,6 @@
 // Employee класс для представления сущности сотрудника
 export class Employee {
-	constructor (id, firstName, lastName, patronymic, position, phone, userId) {
+	constructor (id, firstName, lastName, patronymic, position, phone, userId, email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -8,6 +8,8 @@ export class Employee {
 		this.position = position;
 		this.phone = phone;
 		this.userId = userId;
+		this.email = email;
+		this.isRemoved = false;
 	}
 }
 

@@ -11,7 +11,7 @@ export default class CProjectCreateWindow {
     }
 
     config(teamLeadsIDFIO) {
-        webix.ui(getProjectCreateWindow(teamLeadsIDFIO)).show();
+        return webix.ui(getProjectCreateWindow(teamLeadsIDFIO));
     }
 
     attachEvents() {
@@ -29,7 +29,7 @@ export default class CProjectCreateWindow {
             
             if(this.validation(val)) {               
 
-                let project = new Project(0, val.addProjectName, val.addProjectDescription, val.addProjectTeamLead);
+                let project = new Project(0, val.addProjectName, val.addProjectDescription, val.addProjectTeamLead, []);
                 projectModel.createProject(project).then((result) => {
                     this.view.form.clear();
                     this.view.window.close();
@@ -53,10 +53,10 @@ export default class CProjectCreateWindow {
         let descr = project.addProjectDescriptionn;
         
         if (name == '') {
-            webix.message("Укажите название проекта!");
+            webix.message({type:"error", text:"Укажите название проекта!"});
         } else {
             if (descr == '') {
-                webix.message("Заполните описание проекта!");
+                webix.message({type:"error", text:"Заполните описание проекта!"});
             } else {
                 return true;
             }

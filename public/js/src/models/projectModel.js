@@ -1,14 +1,20 @@
 import { Project } from "./entities/project.js";
 import employeeModel from './employeeModel.js';
+import { Employee, POSITION } from "./entities/employee.js";
 
 // Класс для операций над проектами
 class ProjectModel {
     constructor() {
         this.data = new Map();
-        this.data.set(4, new Project(4, "ProjectA", "A Bla-Bla", '12 Petrov Sergey Sergeevich'));
-        this.data.set(1, new Project(1, "ProjectB", "B Bla-Bla", '12 Petrov Sergey Sergeevich'));
-        this.data.set(2, new Project(2, "ProjectC", "C Bla-Bla", '12 Petrov Sergey Sergeevich'));
-        this.data.set(3, new Project(3, "ProjectD", "D Bla-Bla", '12 Petrov Sergey Sergeevich'));
+
+        employeeModel.getEmployeeById(12).then((teamLead) => {
+            employeeModel.getEmployeeById(11).then((normal) => {
+                this.data.set(4, new Project(4, "ProjectA", "A Bla-Bla", '12 Petrov Sergey Sergeevich', [normal]));
+                this.data.set(1, new Project(1, "ProjectB", "B Bla-Bla", '12 Petrov Sergey Sergeevich', [normal, teamLead]));
+                this.data.set(2, new Project(2, "ProjectC", "C Bla-Bla", '12 Petrov Sergey Sergeevich', []));
+                this.data.set(3, new Project(3, "ProjectD", "D Bla-Bla", '12 Petrov Sergey Sergeevich', []));
+            })
+        })
     }
 
     getProjects() {
@@ -35,6 +41,70 @@ class ProjectModel {
         return new Promise((resolve, reject) => {
             resolve(teamLeads);
         })
+    }
+
+    updateProjectsByEmployee(employee) {
+        if (employee.position == POSITION.teamLead) {
+            let projects = this.getTeamLeadProjectsById(employee.id);
+            for (let project of projects) {
+                project.teamLeadIdFIO = employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic;
+            }
+        }
+
+        let allProjects = this.getEmployeesProjectsById(employee.id);
+
+        for (let project of allProjects) {
+            for (let empl of project.employees) {
+                if (empl.id == employee.id) {
+                    empl.firstName = employee.firstName;
+                    empl.lastName = employee.lastName;
+                    empl.patronymic = employee.patronymic;
+                    empl.email = employee.email;
+                    empl.phone = employee.phone;
+                    empl.position = employee.position;
+                    this.data.set(project.id, project);
+                }
+            }
+        }
+
+        return new Promise((resolve, reject) => {
+            resolve(employee.id);
+        })
+
+    }
+
+    getEmployeesProjectsById(employeeId) {
+        let projects = [];
+        for (let entry of this.data.values()) {
+            for (let empl of entry.employees) {
+                if (empl.id == employeeId) {
+                    projects.push(entry);
+                }
+            }
+        }
+
+        return projects;
+    }
+
+    getTeamLeadProjectsById(employeeId) {
+        let projects = [];
+        for (let entry of this.data.values()) {
+            let id = '';
+
+            for (let i =0; i < entry.teamLeadIdFIO.length; i++) {
+                if (entry.teamLeadIdFIO[i] == ' ') {
+                    break;
+                } else {
+                    id += entry.teamLeadIdFIO[i];
+                }
+            }
+
+            if (id == employeeId) {
+                projects.push(entry);
+            }
+        }
+
+        return projects;
     }
 
     getProjectEmployees(projectId) {
@@ -90,6 +160,12 @@ class ProjectModel {
             this.data.set(project.id, project)
             resolve(this.data.get(project.id))
         })
+    }
+
+    addEmployeeToProject(employee, projectId) {
+        if (!this.data.get(projectId).employees.includes(Employee)) {
+            this.data.get(projectId).employees.push(employee);
+        }
     }
 
     getProjectsNames() {

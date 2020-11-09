@@ -7,11 +7,34 @@ class AuthModel{
         this.data = new Map();
         this.data.set(11, new User(11, "ivan90@mail.ru", 333));
         this.data.set(12, new User(12, "sergey90@bk.ru", 111));
-        
+    }
+
+    removeUser(userId) {
+        this.data.get(userId).isRemoved = true;
+        return new Promise((resolve, reject) => {
+            resolve(userId);
+        });
+    }
+
+    restoreUser(userId) {
+        this.data.get(userId).isRemoved = false;
+        return new Promise((resolve, reject) => {
+            resolve(userId);
+        });
     }
 
     createUser(user) {
         this.data.set(user.id, user);
+        return new Promise((resolve, reject) => {
+            resolve(user.id);
+        });
+    }
+
+    updateUser(user) {
+        this.data.set(user.id, user);
+        return new Promise((resolve, reject) => {
+            resolve(user.id);
+        })
     }
 
     // выход из учетной записи

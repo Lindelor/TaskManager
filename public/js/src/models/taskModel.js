@@ -1,11 +1,13 @@
-import {Task, TASK_STATUS, URGENCY} from "./entities/task.js"
+import employeeModel from "./employeeModel.js";
+import {Task, TASK_STATUS, URGENCY} from "./entities/task.js";
+import projectModel from './projectModel.js';
 
 //Класс операций над задачами
 class TaskModel {
     constructor() {
         this.data = new Map();
-        this.data.set(1, new Task(1, "TaskA", "Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1", "ProjectA", 0, 2, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.ASAP));
-        this.data.set(2, new Task(2, "TaskB", "Bla-bla-bla2", "ProjectA", 0, 5, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
+        this.data.set(1, new Task(1, "TaskA", "Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1", "ProjectA", 4, 2, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.ASAP));
+        this.data.set(2, new Task(2, "TaskB", "Bla-bla-bla2", "ProjectA", 4, 5, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
         this.data.set(3, new Task(3, "TaskC", "Bla-bla-bla3", "ProjectB", 1, 8, '', TASK_STATUS.inProgress, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
         this.data.set(4, new Task(4, "TaskD", "Bla-bla-bla4", "ProjectB", 1, 2, 3, TASK_STATUS.done, '12' + ' Petrov Sergey Sergeevich', URGENCY.NVM));
     }
@@ -29,7 +31,43 @@ class TaskModel {
         })
     }
 
-    //получение всех таск сотрудника
+    //Функция обновляет сотрудника в задачах после изменения сотрудника.
+    updateTasksEmployee(employee) {
+        return new Promise((resolve, reject) => {
+
+            let tasks = this.getEmployeeTasksById(employee.id);
+
+            for (let entry of tasks) {
+                entry.employee = employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic;
+                this.data.set(entry.id, entry);
+            }
+
+            resolve(employee);
+        })
+    }
+
+    //Получение таск сотрудника по id
+    getEmployeeTasksById(employeeId) {
+        let tasks = [];
+        for (let entry of this.data.values()) {
+            let id = '';
+            for (let i =0; i < entry.employee.length; i++) {
+                if (entry.employee[i] == ' ') {
+                    break;
+                } else {
+                    id += entry.employee[i];
+                }
+            }
+
+            if (id == employeeId) {
+                tasks.push(entry);
+            }
+        }
+
+        return tasks;
+    }
+
+    //получение всех таск сотрудника по id+FIO
     getEmployeeTasks(employeeIdFIO) {
         return new Promise((resolve, reject) => {
             let tasks = [];
@@ -95,14 +133,27 @@ class TaskModel {
     updateTask(task) {
         return new Promise((resolve, reject) => {
             let old = this.data.get(task.id);
-            if (old.status == TASK_STATUS.reconciliation) {
+            if (task.status == TASK_STATUS.reconciliation) {
+                this.data.set(task.id, task);
+                resolve(this.data.get(task.id));
+            } else if (old.status == TASK_STATUS.reconciliation) {
                 task.status = TASK_STATUS.haveEmployee;
-                task.end = '';
-                task.estimated = '';
+                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
+                    projectModel.addEmployeeToProject(result, task.projectId);
+                    task.end = '';
+                    task.estimated = '';
+                    this.data.set(task.id, task);
+                    resolve(this.data.get(task.id));
+                })
             } else if(old.status == TASK_STATUS.fresh) {
                 task.status = TASK_STATUS.haveEmployee;
-                task.end = '';
-                task.estimated = '';
+                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
+                    projectModel.addEmployeeToProject(result, task.projectId);
+                    task.end = '';
+                    task.estimated = '';
+                    this.data.set(task.id, task);
+                    resolve(this.data.get(task.id));
+                })
             } else if (old.status == TASK_STATUS.haveEmployee) {
                 if (task.status == old.status) {
                     task.status = TASK_STATUS.inProgress;
@@ -117,9 +168,13 @@ class TaskModel {
                     task.status = TASK_STATUS.reconciliation;
                 }
             } else {
-                task.status = TASK_STATUS.haveEmployee;
-                task.end = '';
-                task.estimated = '';
+                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
+                    projectModel.addEmployeeToProject(result, task.projectId);
+                    task.end = '';
+                    task.estimated = '';
+                    this.data.set(task.id, task);
+                    resolve(this.data.get(task.id));
+                })
             }
             
             this.data.set(task.id, task);

@@ -1,10 +1,11 @@
 import {Employee, POSITION} from "./entities/employee.js"
+
 //Класс для операций над сотрудниками
 class EmployeeModel {
     constructor() {
         this.data = new Map();
-        this.data.set(11, new Employee(11, "Ivan", "Ivanov", "Ivanovich", POSITION.manager, "834964843543", 11));
-        this.data.set(12, new Employee(12, "Sergey", "Petrov", "Sergeevich", POSITION.teamLead, "74386789347", 12));
+        this.data.set(11, new Employee(11, "Ivan", "Ivanov", "Ivanovich", POSITION.manager, "834964843543", 11, "ivan90@mail.ru"));
+        this.data.set(12, new Employee(12, "Sergey", "Petrov", "Sergeevich", POSITION.teamLead, "74386789347", 12, "sergey90@bk.ru"));
     }
 
     //Получение всех сотрудников
@@ -41,6 +42,26 @@ class EmployeeModel {
         })
     }
 
+    getTeamLeadsIdFIO(){
+        return new Promise((resolve, reject) => {
+            let employees = [];
+
+            for (let employee of this.data.values()) {
+                if (employee.position == POSITION.teamLead) {
+                    let patronymic;
+                    if (employee.patronymic == null || employee.patronymic == '') {
+                        patronymic = '';
+                    } else {
+                        patronymic = employee.patronymic;
+                    }
+                    employees.push(employee.id + ' ' + employee.lastName  + ' ' + employee.firstName + ' ' + patronymic);
+                }
+            }
+
+            resolve(employees);
+        })
+    }
+
     //Получение сотрудника из ID+FIO
     getEmployeeByIdFIO(FIO) {
         let id = '';
@@ -52,7 +73,7 @@ class EmployeeModel {
           }
         }
 
-        return this.getEmployeeById(id);
+        return this.getEmployeeById(Number(id));
     }
 
     //Получение сотрудника по его id
@@ -90,18 +111,31 @@ class EmployeeModel {
 
     //Удаление сотрудника
     removeEmployee(employeeId) {
-        this.data.delete(employeeId);
+        this.data.get(employeeId).isRemoved = true;
+        return new Promise((resolve, reject) => {
+            resolve(employeeId);
+        });
+    }
+
+    //Восстановление сотрудника
+    restoreEmployee(employeeId) {
+        this.data.get(employeeId).isRemoved = false;
+        return new Promise((resolve, reject) => {
+            resolve(employeeId);
+        });
     }
 
     //Получение должностей
     getPositions() {
-        let positions = [];
+        return new Promise((resolve, reject) => {
+            let positions = [];
 
-        for (let entry in POSITION) {
-            positions.push(POSITION[entry]);
-        }
-
-        return positions;
+            for (let entry in POSITION) {
+                positions.push(POSITION[entry]);
+            }
+    
+            resolve(positions);
+        });
     }
 }
 

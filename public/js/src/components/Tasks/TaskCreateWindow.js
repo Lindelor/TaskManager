@@ -26,7 +26,5 @@ export default function getCreateTaskWindowView(projectsNames, urgencies) {
                 bottomPadding: 18,
             }
         }
-    }
-
-
+    };
 }
