@@ -4,7 +4,6 @@ export default function getEmployeesTabView() {
 		{id: 'employeesTable', header: 'Сотрудники', view:'datatable', columns:cells,
         data:[]});
 }
-
 let cells = [
     { id:"id", header:["ID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
     { id:"userId", header:["UserID", {content:"textFilter"}], css:"rank", sort:"int", width:70},
