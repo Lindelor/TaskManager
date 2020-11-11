@@ -54,6 +54,9 @@ export default class CTaskChangeWindow {
                     if (this.currentEmployee.position == POSITION.teamLead) {
                         task.urgency = val.taskChangeUrgency;
                     }
+                    if (task.status == TASK_STATUS.reconciliation) {
+                        task.status = TASK_STATUS.fresh;
+                    }
                     taskModel.updateTask(task).then((result) => {
                         this.view.form.clear();
                         this.view.window.close();

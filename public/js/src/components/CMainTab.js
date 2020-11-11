@@ -34,7 +34,10 @@ export default class CMainTab {
 
     //Возвращение вебикс конфигурации компонента
     config() {
-        let currentCells = [this.tasksTab.config(), this.projectsTab.config(), this.employeesTab.config()];
+        let currentCells = [this.tasksTab.config(), this.projectsTab.config()];
+        if (this.currentEmployee.position == POSITION.teamLead) {
+            currentCells.push(this.employeesTab.config());
+        }
         return getMainTab(this.currentEmployee, currentCells);
     }
 
@@ -44,8 +47,8 @@ export default class CMainTab {
         //инициализация используемых представлений
         this.projectsTab.attachEvents();
         this.tasksTab.attachEvents();
-        this.employeesTab.attachEvents();
-        this.employeesTab.refreshTable();
+        this.tasksTab.refreshTable();
+        this.projectsTab.refreshTable();
 
         this.view = {
             mainView : $$("mainView"),
@@ -55,9 +58,25 @@ export default class CMainTab {
             userInfoButton: $$("userButton"),
         };
 
-        //Скрытие таба сотрудников, если пользователь не тимлид
-        if (this.currentEmployee.position != POSITION.teamLead) {
-            this.employeesTab.view.table.define("hidden", true);
+        //добавление обработки таба сотрудников, если пользователь - тимлид
+        if (this.currentEmployee.position == POSITION.teamLead) {
+            this.employeesTab.attachEvents();
+            this.employeesTab.refreshTable();
+
+            //Обновление всех данных в таблицах при изменении сотрудников
+            this.employeesTab.view.table.attachEvent('onAfterLoad', () => {
+                this.projectsTab.refreshTable();
+                this.tasksTab.refreshTable();
+            })
+
+            //Привязка кнопки к текущей вкладке
+            this.employeesTab.view.table.attachEvent('onViewShow', () => {
+                if (this.currentEmployee.position == POSITION.teamLead) {
+                    this.view.addTaskButton.hide();
+                    this.view.addProjectButton.hide();
+                    this.view.addUserButton.show();
+                }
+            })
         }
 
         //Вызов окна с информацией о текущем сотруднике
@@ -82,12 +101,6 @@ export default class CMainTab {
                     })
                 });
             });
-        })
-
-        //Обновление всех данных в таблицах при изменении сотрудников
-        this.employeesTab.view.table.attachEvent('onAfterLoad', () => {
-            this.projectsTab.refreshTable();
-            this.tasksTab.refreshTable();
         })
 
         //Вызов окна регистрации сотрудника
@@ -118,14 +131,10 @@ export default class CMainTab {
             });
         })
 
-        //Привязка кнопки к текущей вкладке
-        this.employeesTab.view.table.attachEvent('onViewShow', () => {
-            if (this.currentEmployee.position == POSITION.teamLead) {
-                this.view.addTaskButton.hide();
-                this.view.addProjectButton.hide();
-                this.view.addUserButton.show();
-            }
-        })
+        //Сокрытие кнопки создания задачи, если пользователь не тимлид
+        if (this.currentEmployee.position != POSITION.teamLead) {
+            this.view.addTaskButton.hide();
+        }
 
         //Привязка кнопки к текущей вкладке
         this.projectsTab.view.table.attachEvent('onViewShow', () => {

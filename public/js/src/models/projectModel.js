@@ -90,6 +90,13 @@ class ProjectModel {
         return projects;
     }
 
+    //Получение ID+FIO Тимлида по id проекта
+    getTeamLeadIdFIOByProjectId(projectId) {
+        return new Promise((resolve, reject) => {
+            resolve(this.data.get(projectId).teamLeadIdFIO);
+        })
+    }
+
     //Получение проектов по ID тимлида
     getTeamLeadProjectsById(employeeId) {
         let projects = [];
@@ -123,7 +130,7 @@ class ProjectModel {
     getLimitedProjectsData(employee) {
         let projects = [];
         for (let project of this.data.values()) {
-            if (project.employees.includes(employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic)) {
+            if (project.employees.includes(employee)) {
                 projects.push(project);
             }
         }

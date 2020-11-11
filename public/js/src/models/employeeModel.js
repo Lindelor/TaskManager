@@ -73,7 +73,6 @@ class EmployeeModel {
             id += FIO[i];
           }
         }
-
         return this.getEmployeeById(Number(id));
     }
 

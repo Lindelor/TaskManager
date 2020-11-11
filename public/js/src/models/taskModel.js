@@ -67,8 +67,9 @@ class TaskModel {
         return tasks;
     }
 
-    //получение всех таск сотрудника по id+FIO
-    getEmployeeTasks(employeeIdFIO) {
+    //получение всех таск сотрудника по сотруднику
+    getEmployeeTasks(employee) {
+        let employeeIdFIO = employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic;
         return new Promise((resolve, reject) => {
             let tasks = [];
 
@@ -132,16 +133,21 @@ class TaskModel {
 	// изменение таска
     updateTask(task) {
         return new Promise((resolve, reject) => {
+
             let old = this.data.get(task.id);
             if (task.status == TASK_STATUS.reconciliation) {
-                this.data.set(task.id, task);
-                resolve(this.data.get(task.id));
+                projectModel.getTeamLeadIdFIOByProjectId(Number(task.projectId)).then((result) => {
+                    task.employee = result;
+                    this.data.set(task.id, task);
+                    resolve(this.data.get(task.id));
+                })
             } else if (old.status == TASK_STATUS.reconciliation) {
                 task.status = TASK_STATUS.haveEmployee;
                 employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
                     projectModel.addEmployeeToProject(result, task.projectId);
                     task.end = '';
                     task.estimated = '';
+                    console.log("kek");
                     this.data.set(task.id, task);
                     resolve(this.data.get(task.id));
                 })
