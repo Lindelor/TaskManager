@@ -1,23 +1,22 @@
 import getTasksView from './TasksTabView.js';
 import taskModel from '../../models/taskModel.js';
-import projectModel from '../../models/projectModel.js';
 import employeeModel from '../../models/employeeModel.js';
 import CTaskChangeWindow from './CTaskChangeWindow.js';
 import {POSITION} from '../../models/entities/employee.js';
 
 export default class TasksTab {
-    constructor() {
+    constructor(currentEmployee) {
         this.view;
-        this.currentEmployee;
+        this.currentEmployee = currentEmployee;
+        this.taskChange;
     }
 
     init() { 
 
     }
 
-    config(currentEmployee) {
-        this.currentEmployee = currentEmployee;
-        return getTasksView(currentEmployee);
+    config() {
+        return getTasksView(this.currentEmployee);
     }
 
     attachEvents() {
@@ -27,23 +26,21 @@ export default class TasksTab {
         };
 
         this.view.table.attachEvent('onItemClick', (id) => {
-            let taskChangeWindow = new CTaskChangeWindow();
+            let taskChangeWindow = new CTaskChangeWindow(this.currentEmployee);
             taskChangeWindow.init();
             let task = this.view.table.getItem(id);
-            projectModel.getProjectsNames().then((projectsNames) => {
-                employeeModel.getEmployeesIdFIO().then((employees) => {
-                    taskModel.getTaskUrgencies().then((urgencies) => {
-                        webix.ui(taskChangeWindow.config(task, projectsNames, employees, urgencies)).show();
-                        taskChangeWindow.attachEvents();
+
+            employeeModel.getEmployeesIdFIO().then((employees) => {
+                taskModel.getTaskUrgencies().then((urgencies) => {
+                    webix.ui(taskChangeWindow.config(task, employees, urgencies)).show();
+                    taskChangeWindow.attachEvents();
+                    this.taskChange = $$("taskChangeWindow");
+                    this.taskChange.attachEvent('onDestruct', () => {
+                        this.refreshTable();
                     })
                 })
             })
-        })
 
-        this.view.table.attachEvent('onViewShow', () => {
-            $$('addTask').show();
-            $$('addProject').hide();
-            $$('registerUser').hide();
         })
 
     }

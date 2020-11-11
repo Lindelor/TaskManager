@@ -34,10 +34,9 @@ export default class CTaskCreateWindow {
                 projectModel.getProjectByName(val.addTaskProject).then((finalProject) => {
                     let task = new Task(0, val.addTaskName, val.addTaskDescription, finalProject.name, finalProject.id, '', '', TASK_STATUS.fresh, '', val.addTaskUrgency);
                     taskModel.createTask(task).then((result) => {
-                        this.refreshTable();
+                        this.view.form.clear();
+                        this.view.window.close();
                     });
-                    this.view.form.clear();
-                    this.view.window.close();
                 })
 
             }            
@@ -68,13 +67,5 @@ export default class CTaskCreateWindow {
         }
 
         return false;
-    }
-
-    refreshTable() {
-        taskModel.getTasks().then((res) => {
-            $$("tasksTable").clearAll();
-            $$("tasksTable").parse(res);
-            $$("tasksTable").refreshFilter();
-        })
     }
 }

@@ -4,17 +4,17 @@ import {getProjectsTabView} from './ProjectsTabView.js';
 import CProjectChangeWindow from './CProjectChangeWindow.js';
 
 export default class ProjectsTab {
-    constructor() {
+    constructor(currentEmployee) {
         this.view;
-        this.currentEmployee;
+        this.currentEmployee = currentEmployee;
+        this.projectWindow;
     }
 
     init() { 
 
     }
 
-    config(currentEmployee) {
-        this.currentEmployee = currentEmployee;
+    config() {
         return getProjectsTabView();
     }
 
@@ -31,13 +31,12 @@ export default class ProjectsTab {
                 let project = this.view.table.getItem(id);
                 webix.ui(projectChangeWindow.config(project, this.currentEmployee, result)).show();
                 projectChangeWindow.attachEvents();
-            })
-        })
+                this.projectWindow = $$('projectChangeWindow');
+                this.projectWindow.attachEvent('onDestruct', () => {
+                    this.refreshTable();
+                })
 
-        this.view.table.attachEvent('onViewShow', () => {
-            $$('addTask').hide();
-            $$('addProject').show();
-            $$('registerUser').hide();
+            })
         })
 
     }

@@ -33,7 +33,6 @@ export default class CEmployeeChangeWindow {
                 authModel.restoreUser(id).then((res) => {
                     this.view.form.clear();
                     this.view.window.close();
-                    this.refreshTable();
                 })
             })
         })
@@ -44,7 +43,6 @@ export default class CEmployeeChangeWindow {
                 authModel.removeUser(id).then((res) => {
                     this.view.form.clear();
                     this.view.window.close();
-                    this.refreshTable();
                 })
             })
         })
@@ -65,11 +63,10 @@ export default class CEmployeeChangeWindow {
                         authModel.getUserById(result.id).then((resultUser) => {
                             resultUser.email = newValue.employeeChangeEmail;
                             authModel.updateUser(resultUser).then((res) => {
-                                this.view.form.clear();
-                                this.view.window.close();
                                 taskModel.updateTasksEmployee(result).then((val) => {
                                     projectModel.updateProjectsByEmployee(result).then((value) => {
-                                        this.refreshTable();
+                                        this.view.form.clear();
+                                        this.view.window.close();
                                     })
                                 })
                             })
@@ -115,26 +112,5 @@ export default class CEmployeeChangeWindow {
 
         return true;       
 
-    }
-
-    refreshTable() {
-
-        employeeModel.getEmployees().then((result) => {
-            $$('employeesTable').clearAll();
-            $$('employeesTable').parse(result);
-            $$('employeesTable').refreshFilter();
-        })
-
-        projectModel.getProjects().then((result) => {
-            $$('projectsTable').clearAll();
-            $$('projectsTable').parse(result);
-            $$('projectsTable').refreshFilter();
-        })
-
-        taskModel.getTasks().then((res) => {
-            $$("tasksTable").clearAll();
-            $$("tasksTable").parse(res);
-            $$("tasksTable").refreshFilter();
-        })
     }
 }

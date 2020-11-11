@@ -5,15 +5,14 @@ import CEmployeeChangeWindow from './CEmployeeChangeWindow.js';
 export default class EmployeesTab {
     constructor() {
         this.view;
-        this.currentEmployee;
+        this.changeWindow;
     }
 
     init() { 
 
     }
 
-    config(currentEmployee) {
-        this.currentEmployee = currentEmployee;
+    config() {
         return getEmployeesTabView();
     }
 
@@ -30,13 +29,11 @@ export default class EmployeesTab {
                 employeeChangeWindow.init();
                 webix.ui(employeeChangeWindow.config(employee, positions)).show();
                 employeeChangeWindow.attachEvents();
+                this.changeWindow = $$('employeeChangeWindow');
+                this.changeWindow.attachEvent('onDestruct', () => {
+                    this.refreshTable();
+                })
             })
-        })
-
-        this.view.table.attachEvent('onViewShow', () => {
-            $$('addTask').hide();
-            $$('addProject').hide();
-            $$('registerUser').show();
         })
 
     }

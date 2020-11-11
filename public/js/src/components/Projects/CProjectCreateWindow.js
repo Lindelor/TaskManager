@@ -33,7 +33,6 @@ export default class CProjectCreateWindow {
                 projectModel.createProject(project).then((result) => {
                     this.view.form.clear();
                     this.view.window.close();
-                    this.refreshTable();
                 })
             }            
         })
@@ -63,15 +62,5 @@ export default class CProjectCreateWindow {
         }
 
         return false;
-    }
-
-    refreshTable() {
-
-        projectModel.getProjects().then((result) => {
-            $$('projectsTable').clearAll();
-            $$('projectsTable').parse(result);
-            $$('projectsTable').refreshFilter();
-        })
-
     }
 }

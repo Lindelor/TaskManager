@@ -30,7 +30,6 @@ export default class CProjectChangeWindow {
 
             let val = this.getVal();
             projectModel.removeProject(Number(val.projectChangeId)).then((res) => {
-                this.refreshTable();
                 this.view.form.clear();
                 this.view.window.close();
             })
@@ -47,7 +46,6 @@ export default class CProjectChangeWindow {
 
                 if (this.validateProject(resProject)) {
                     projectModel.updateProject(resProject).then((res) => {
-                        this.refreshTable();
                         this.view.form.clear();
                         this.view.window.close()
                     })
@@ -73,16 +71,6 @@ export default class CProjectChangeWindow {
 
     getVal() {
         return this.view.form.getValues();
-    }
-
-    refreshTable() {
-
-        projectModel.getProjects().then((result) => {
-            $$('projectsTable').clearAll();
-            $$('projectsTable').parse(result);
-            $$('projectsTable').refreshFilter();
-        })
-
     }
 
 }

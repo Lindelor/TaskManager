@@ -172,6 +172,7 @@ class TaskModel {
                     projectModel.addEmployeeToProject(result, task.projectId);
                     task.end = '';
                     task.estimated = '';
+                    task.status = TASK_STATUS.haveEmployee;
                     this.data.set(task.id, task);
                     resolve(this.data.get(task.id));
                 })

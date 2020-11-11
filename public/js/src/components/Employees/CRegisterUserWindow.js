@@ -37,7 +37,6 @@ export default class CRegisterUserWindow {
                     authModel.createUser(user).then((result) => {
                         this.view.form.clear();
                         this.view.window.close();
-                        this.refreshTable();
                     })
                 })
             }            
@@ -82,16 +81,6 @@ export default class CRegisterUserWindow {
         }
 
         return true;       
-
-    }
-
-    refreshTable() {
-
-        employeeModel.getEmployees().then((result) => {
-            $$('employeesTable').clearAll();
-            $$('employeesTable').parse(result);
-            $$('employeesTable').refreshFilter();
-        })
 
     }
 }

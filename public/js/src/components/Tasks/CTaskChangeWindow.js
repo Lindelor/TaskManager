@@ -2,17 +2,19 @@ import getChangeTaskWindowView from './TaskChangeWindow.js';
 import taskModel from '../../models/taskModel.js';
 import {TASK_STATUS} from '../../models/entities/task.js';
 import projectModel from '../../models/projectModel.js';
+import { POSITION } from '../../models/entities/employee.js';
 
 export default class CTaskChangeWindow {
-    constructor() {
+    constructor(currentEmployee) {
         this.view;
+        this.currentEmployee = currentEmployee;
     }
 
     init() {}
 
-    config(task, projectsNames, employees, statuses, urgencies) {
+    config(task, employees, urgencies) {
 
-        return getChangeTaskWindowView(task, projectsNames, employees, statuses, urgencies);
+        return getChangeTaskWindowView(task, employees, urgencies);
 
     }
 
@@ -41,8 +43,10 @@ export default class CTaskChangeWindow {
                     task.employee = val.taskChangeEmployee;
                     task.end = Number(val.taskChangeFact);
                     task.estimated = Number(val.taskChangeEstimated);
+                    if (this.currentEmployee.position == POSITION.teamLead) {
+                        task.urgency = val.taskChangeUrgency;
+                    }
                     taskModel.updateTask(task).then((result) => {
-                        this.refreshTable();
                         this.view.form.clear();
                         this.view.window.close();
                     });
@@ -56,7 +60,6 @@ export default class CTaskChangeWindow {
             taskModel.getTaskByID(Number(val.taskChangeId)).then((task) => {
                 task.status = TASK_STATUS.reconciliation;
                 taskModel.updateTask(task).then((result) => {
-                    this.refreshTable();
                     this.view.form.clear();
                     this.view.window.close();
                 })
@@ -71,19 +74,10 @@ export default class CTaskChangeWindow {
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
             let id = Number(this.getVal().taskChangeId);
             taskModel.deleteTask(id).then((result) => {
-                this.refreshTable();
                 this.view.form.clear();
                 this.view.window.close();
             });
         });
-    }
-
-    refreshTable() {
-        taskModel.getTasks().then((res) => {
-            $$("tasksTable").clearAll();
-            $$("tasksTable").parse(res);
-            $$("tasksTable").refreshFilter();
-        })
     }
 
     getVal() {
@@ -108,6 +102,12 @@ export default class CTaskChangeWindow {
             this.view.windowConfirmButton.define({
                 value:"Переназначить",
             });
+            if (this.currentEmployee.position != POSITION.teamLead) {
+                this.view.windowConfirmButton.define("hidden", true);
+            }
+        }
+        if (this.currentEmployee.position != POSITION.teamLead) {
+            this.view.windowRemoveButton.define("hidden", true);
         }
         this.view.windowConfirmButton.refresh();
     }
