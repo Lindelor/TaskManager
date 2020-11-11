@@ -1,3 +1,4 @@
+//Возвращает вебикс конфигурацию формы изменения таски
 export default function getChangeTaskWindowView(task, employees, urgencies) {
     return {
             view:"window",

@@ -1,23 +1,27 @@
 import getChangeProjectWindow from './ProjectChangeWindow.js';
 import projectModel from '../../../models/projectModel.js';
-import {POSITION} from '../../../models/entities/employee.js';
 
+//Компонент окна редактора проекта
 export default class CProjectChangeWindow {
     constructor() {
         this.view;
         this.currentEmployee;
     }
 
+    //Инициализация компонента
     init() { 
     }
 
+    //Возвращение вебикс конфигурации компонента
     config(project, currentEmployee, teamLeadsIdFIO) {
         this.currentEmployee = currentEmployee;
         return webix.ui(getChangeProjectWindow(project, currentEmployee, teamLeadsIdFIO));
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             window : $$("projectChangeWindow"),
             windowConfirmButton : $$("changeProjectButtonConfirm"),
@@ -26,6 +30,7 @@ export default class CProjectChangeWindow {
             form : $$("projectChangeForm"),
         };
 
+        //Событие удаления проекта
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
 
             let val = this.getVal();
@@ -36,6 +41,7 @@ export default class CProjectChangeWindow {
             
         })
 
+        //Событие изменения проекта
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
             let val = this.getVal();
@@ -54,12 +60,14 @@ export default class CProjectChangeWindow {
             
         })
 
+        //Закрытие окна
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
             this.view.window.close();
         })
     }
 
+    //Валидация данных в форме
     validateProject(project) {
         if (project.description == '') {
             webix.message({type:"error", text:"Заполните описание!"});
@@ -69,6 +77,7 @@ export default class CProjectChangeWindow {
         return true;
     }
 
+    //Получение данных из формы
     getVal() {
         return this.view.form.getValues();
     }

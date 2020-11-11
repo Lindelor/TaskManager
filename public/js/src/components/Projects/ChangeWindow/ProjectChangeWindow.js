@@ -1,4 +1,4 @@
-//Возвращает и показывает форму редактирования проекта
+//Функция возвращает webix конфигурацию окна редактора проекта
 export default function getChangeProjectWindow(project, currentEmployee, teamLeadsIdFIO) {
     if ((currentEmployee.id + ' ' + currentEmployee.lastName + ' ' + currentEmployee.firstName + ' ' + currentEmployee.patronymic) == project.teamLeadIdFIO) {
         conBtn.hidden = false;

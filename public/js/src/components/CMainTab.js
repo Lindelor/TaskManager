@@ -11,6 +11,7 @@ import CProjectCreateWindow from './Projects/CreateWindow/CProjectCreateWindow.j
 import CRegisterUserWindow from './Employees/CreateWindow/CRegisterUserWindow.js';
 import CUserInfo from './UserInfo/CUserInfo.js';
 
+//Компонент основного окна
 export default class CMainTab {
     constructor(currentEmployee, currentUser) {
         this.view;
@@ -24,19 +25,23 @@ export default class CMainTab {
         this.addEmployeeWindow;
     }
 
+    //Инициализация компонента
     init() { 
         this.projectsTab.init();
         this.employeesTab.init();
         this.tasksTab.init();
     }
 
+    //Возвращение вебикс конфигурации компонента
     config() {
         let currentCells = [this.tasksTab.config(), this.projectsTab.config(), this.employeesTab.config()];
         return getMainTab(this.currentEmployee, currentCells);
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.projectsTab.attachEvents();
         this.tasksTab.attachEvents();
         this.employeesTab.attachEvents();
@@ -50,10 +55,12 @@ export default class CMainTab {
             userInfoButton: $$("userButton"),
         };
 
+        //Скрытие таба сотрудников, если пользователь не тимлид
         if (this.currentEmployee.position != POSITION.teamLead) {
             this.employeesTab.view.table.define("hidden", true);
         }
 
+        //Вызов окна с информацией о текущем сотруднике
         this.view.userInfoButton.attachEvent('onItemClick', () => {
             let userInfoWindow = new CUserInfo(this.currentEmployee);
             userInfoWindow.init();
@@ -61,6 +68,7 @@ export default class CMainTab {
             userInfoWindow.attachEvents();
         })
 
+        //Вызов окна добавления задачи
         this.view.addTaskButton.attachEvent('onItemClick', () => {
             projectModel.getProjectsNames().then((projectsNames) => {
                 taskModel.getTaskUrgencies().then((urgencies) => {
@@ -76,11 +84,13 @@ export default class CMainTab {
             });
         })
 
+        //Обновление всех данных в таблицах при изменении сотрудников
         this.employeesTab.view.table.attachEvent('onAfterLoad', () => {
             this.projectsTab.refreshTable();
             this.tasksTab.refreshTable();
         })
 
+        //Вызов окна регистрации сотрудника
         this.view.addUserButton.attachEvent('onItemClick', () => {
             employeeModel.getPositions().then((result) => {
                 let registerUserWindow = new CRegisterUserWindow();
@@ -94,6 +104,7 @@ export default class CMainTab {
             });
         })
 
+        //Вызов окна добавления проекта
         this.view.addProjectButton.attachEvent('onItemClick', () => {
             employeeModel.getTeamLeadsIdFIO().then((result) => {
                 let projectCreateWindow = new CProjectCreateWindow();
@@ -107,6 +118,7 @@ export default class CMainTab {
             });
         })
 
+        //Привязка кнопки к текущей вкладке
         this.employeesTab.view.table.attachEvent('onViewShow', () => {
             if (this.currentEmployee.position == POSITION.teamLead) {
                 this.view.addTaskButton.hide();
@@ -115,6 +127,7 @@ export default class CMainTab {
             }
         })
 
+        //Привязка кнопки к текущей вкладке
         this.projectsTab.view.table.attachEvent('onViewShow', () => {
             if (this.currentEmployee.position == POSITION.teamLead) {
                 this.view.addTaskButton.hide();
@@ -123,6 +136,7 @@ export default class CMainTab {
             }
         })
 
+        //Привязка кнопки к текущей вкладке
         this.tasksTab.view.table.attachEvent('onViewShow', () => {
             if (this.currentEmployee.position == POSITION.teamLead) {
                 this.view.addTaskButton.show();

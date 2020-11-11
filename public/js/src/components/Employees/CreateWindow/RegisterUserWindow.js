@@ -1,4 +1,4 @@
-//Возвращает и показывает форму регистрации
+//Возвращает вебикс конфигурацию формы регистрации
 export default function getRegisterWindow(positions) {
 	return{
 		view:"window",

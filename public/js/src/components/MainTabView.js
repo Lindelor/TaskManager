@@ -1,3 +1,4 @@
+//Возвращение вебикс конфигурации основного окна
 export default function getMainTab(employee, cells) {
 	return {
 		rows: [

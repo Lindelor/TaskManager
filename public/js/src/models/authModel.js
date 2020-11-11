@@ -9,6 +9,7 @@ class AuthModel{
         this.data.set(12, new User(12, "sergey90@bk.ru", 111));
     }
 
+    //Удаление юзера
     removeUser(userId) {
         this.data.get(userId).isRemoved = true;
         return new Promise((resolve, reject) => {
@@ -16,6 +17,7 @@ class AuthModel{
         });
     }
 
+    //Восстановление юзера
     restoreUser(userId) {
         this.data.get(userId).isRemoved = false;
         return new Promise((resolve, reject) => {
@@ -23,6 +25,7 @@ class AuthModel{
         });
     }
 
+    //Создание юзера
     createUser(user) {
         this.data.set(user.id, user);
         return new Promise((resolve, reject) => {
@@ -30,6 +33,7 @@ class AuthModel{
         });
     }
 
+    //Изменение юзера
     updateUser(user) {
         this.data.set(user.id, user);
         return new Promise((resolve, reject) => {

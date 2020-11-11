@@ -4,21 +4,27 @@ import {TASK_STATUS} from '../../../models/entities/task.js';
 import projectModel from '../../../models/projectModel.js';
 import { POSITION } from '../../../models/entities/employee.js';
 
+//Компонент окна изменения таски
 export default class CTaskChangeWindow {
     constructor(currentEmployee) {
         this.view;
         this.currentEmployee = currentEmployee;
     }
 
+    //Инициализация компонента
     init() {}
 
+    //Возвращение вебикс конфигурации компонента
     config(task, employees, urgencies) {
 
         return getChangeTaskWindowView(task, employees, urgencies);
 
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
+
+        //инициализация используемых представлений
         this.view = {
             window: $$('taskChangeWindow'),
             windowConfirmButton: $$('taskConfirmButton'),
@@ -28,8 +34,10 @@ export default class CTaskChangeWindow {
             form: $$('taskChangeForm'),
         }
 
+        //установка надписи на кнопке подтверждения
         this.setButtonVal();
 
+        //Событие изменения задачи
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
             let val = this.getVal()
@@ -55,6 +63,7 @@ export default class CTaskChangeWindow {
             })        
         })
 
+        //Отправка задачи на согласование
         this.view.windowReconButton.attachEvent('onItemClick', () => {
             let val = this.getVal();
             taskModel.getTaskByID(Number(val.taskChangeId)).then((task) => {
@@ -66,11 +75,13 @@ export default class CTaskChangeWindow {
             })
         })
 
+        //Закрытие окна
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
             this.view.window.close();
         })
 
+        //Удаление задачи
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
             let id = Number(this.getVal().taskChangeId);
             taskModel.deleteTask(id).then((result) => {
@@ -80,10 +91,12 @@ export default class CTaskChangeWindow {
         });
     }
 
+    //Получение данных из формы
     getVal() {
         return this.view.form.getValues();
     }
 
+    //Установка надписи на кнопке изменения в зависимости от статуса задачи
     setButtonVal() {
         let status = this.getVal().taskChangeStatus;
         if (status == TASK_STATUS.fresh) {
@@ -112,6 +125,7 @@ export default class CTaskChangeWindow {
         this.view.windowConfirmButton.refresh();
     }
 
+    //Валидация данных в форме
     validation(val) {
         let status = val.taskChangeStatus;
         let estimated = val.taskChangeEstimated;

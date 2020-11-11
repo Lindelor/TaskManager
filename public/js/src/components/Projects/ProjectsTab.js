@@ -3,6 +3,7 @@ import {POSITION} from '../../models/entities/employee.js';
 import {getProjectsTabView} from './ProjectsTabView.js';
 import CProjectChangeWindow from './ChangeWindow/CProjectChangeWindow.js';
 
+//Компонент таба проектов
 export default class ProjectsTab {
     constructor(currentEmployee) {
         this.view;
@@ -10,20 +11,25 @@ export default class ProjectsTab {
         this.projectWindow;
     }
 
+    //Инициализация компонента
     init() { 
 
     }
 
+    //Возвращение конфигурации компонента
     config() {
         return getProjectsTabView();
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             table : $$('projectsTable'),
         };
 
+        //вызов окна редактора проекта
         this.view.table.attachEvent('onItemClick', (id) => {
             projectModel.getAllTeamLeadsIdFIO().then((result) => {
                 let projectChangeWindow = new CProjectChangeWindow;
@@ -41,6 +47,7 @@ export default class ProjectsTab {
 
     }
 
+    //Обновление данных в таблице проектов
     refreshTable() {
         if (this.currentEmployee.position == POSITION.teamLead) {
             projectModel.getProjects().then((result) => {

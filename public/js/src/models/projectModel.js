@@ -17,6 +17,7 @@ class ProjectModel {
         })
     }
 
+    //Получение всех проектов
     getProjects() {
         return new Promise((resolve, reject) => {
             let projects = [];
@@ -29,6 +30,7 @@ class ProjectModel {
         })
     }
 
+    //Получение всех id+FIO активных тимлидов
     getAllTeamLeadsIdFIO() {
         let teamLeads = new Array();
 
@@ -43,6 +45,7 @@ class ProjectModel {
         })
     }
 
+    //Обновление данных о сотруднике в проекте
     updateProjectsByEmployee(employee) {
         if (employee.position == POSITION.teamLead) {
             let projects = this.getTeamLeadProjectsById(employee.id);
@@ -73,6 +76,7 @@ class ProjectModel {
 
     }
 
+    //Получение всех сотрудников проекта
     getEmployeesProjectsById(employeeId) {
         let projects = [];
         for (let entry of this.data.values()) {
@@ -86,6 +90,7 @@ class ProjectModel {
         return projects;
     }
 
+    //Получение проектов по ID тимлида
     getTeamLeadProjectsById(employeeId) {
         let projects = [];
         for (let entry of this.data.values()) {
@@ -107,12 +112,14 @@ class ProjectModel {
         return projects;
     }
 
+    //Получение сотрудников проекта
     getProjectEmployees(projectId) {
         return new Promise((resolve, reject) => {
             resolve(this.data.get(projectId).employees);
         })
     }
 
+    //Получение проектов сотрудника
     getLimitedProjectsData(employee) {
         let projects = [];
         for (let project of this.data.values()) {
@@ -126,12 +133,14 @@ class ProjectModel {
         })
     }
 
+    //Получение проекта по id
     getProjectById(id) {
         return new Promise((resolve, reject) => {
             resolve(this.data.get(id));
         })
     }
 
+    //Создание проекта
     createProject(project) {
 
         return new Promise((resolve, reject) => {
@@ -155,6 +164,7 @@ class ProjectModel {
         })
     }
 
+    //изменение проекта
     updateProject(project) {
         return new Promise((resolve, reject) => {
             this.data.set(project.id, project)
@@ -162,12 +172,14 @@ class ProjectModel {
         })
     }
 
+    //Добавление сотрудника в проект
     addEmployeeToProject(employee, projectId) {
         if (!this.data.get(projectId).employees.includes(Employee)) {
             this.data.get(projectId).employees.push(employee);
         }
     }
 
+    //Получение названий проектов
     getProjectsNames() {
         return new Promise((resolve, reject) => {
             let projects = [];
@@ -181,6 +193,7 @@ class ProjectModel {
         })
     }
 
+    //Получение проекта по имени
     getProjectByName(projectName) {
         return new Promise((resolve, reject) => {
             let project;
@@ -194,6 +207,7 @@ class ProjectModel {
         })
     }
 
+    //Удаление проекта
     removeProject(projectId) {
         return new Promise((resolve, reject) => {
             this.data.delete(projectId);

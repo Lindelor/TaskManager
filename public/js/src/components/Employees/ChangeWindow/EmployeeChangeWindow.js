@@ -1,4 +1,4 @@
-//Функция возвращает webix конфигурацию окна информации сотрудника
+//Функция возвращает webix конфигурацию окна редактора сотрудника
 export default function getEmployeeChangeWindow(employee, positions) {
 
     let buttons = [{ view:"button", id:"employeeChangeConfirmButton", value:"Изменить" , css:"webix_primary"},

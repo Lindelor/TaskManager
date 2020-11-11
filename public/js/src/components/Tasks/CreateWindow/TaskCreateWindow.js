@@ -1,4 +1,4 @@
-//Возвращает и показывает форму создания задачи
+//Возвращает вебикс конфигурацию формы создания задачи
 export default function getCreateTaskWindowView(projectsNames, urgencies) {
     return {
         view: "window",

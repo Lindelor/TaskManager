@@ -4,6 +4,7 @@ import employeeModel from '../../models/employeeModel.js';
 import CTaskChangeWindow from './ChangeWindow/CTaskChangeWindow.js';
 import {POSITION} from '../../models/entities/employee.js';
 
+//Компонент таба задач
 export default class TasksTab {
     constructor(currentEmployee) {
         this.view;
@@ -11,20 +12,25 @@ export default class TasksTab {
         this.taskChange;
     }
 
+    //Инициализация компонента
     init() { 
 
     }
 
+    //Возвращение конфигурации компонента
     config() {
         return getTasksView(this.currentEmployee);
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             table : $$("tasksTable"),
         };
 
+        //Вызов окна изменения задачи
         this.view.table.attachEvent('onItemClick', (id) => {
             let taskChangeWindow = new CTaskChangeWindow(this.currentEmployee);
             taskChangeWindow.init();
@@ -45,6 +51,7 @@ export default class TasksTab {
 
     }
 
+    //Обновление данных в таблице задач
     refreshTable() {
         if (this.currentEmployee.position == POSITION.teamLead) {
             taskModel.getTasks().then((result) => {

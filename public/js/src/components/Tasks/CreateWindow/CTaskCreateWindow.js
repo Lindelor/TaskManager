@@ -3,21 +3,26 @@ import taskModel from '../../../models/taskModel.js';
 import {Task, TASK_STATUS} from '../../../models/entities/task.js';
 import projectModel from '../../../models/projectModel.js';
 
+//Компонент окна создания задачи
 export default class CTaskCreateWindow {
     constructor() {
         this.view;
     }
 
+    //Инициализация компонента
     init() { 
 
     }
 
+    //Возвращение вебикс конфигурации компонента
     config(projectsNames, urgencies) {
         return webix.ui(getCreateTaskWindowView(projectsNames, urgencies));
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             window : $$("addTaskWindow"),
             windowConfirmButton : $$("CreateTaskButton"),
@@ -25,6 +30,7 @@ export default class CTaskCreateWindow {
             form : $$("addTaskForm"),
         };
 
+        //Событие создания задачи
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
             let val = this.getVal()
@@ -42,16 +48,19 @@ export default class CTaskCreateWindow {
             }            
         })
 
+        //Закрытие окна
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
             this.view.window.close();
         })
     }
 
+    //Получение данных из формы
     getVal() {
         return this.view.form.getValues();
     }
 
+    //Валидация данных в форме
     validation(task) {
         let name = task.addTaskName;
         let descr = task.addTaskDescription;

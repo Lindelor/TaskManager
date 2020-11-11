@@ -4,20 +4,25 @@ import taskModel from '../../../models/taskModel.js';
 import getEmployeeChangeWindow from './EmployeeChangeWindow.js';
 import projectModel from '../../../models/projectModel.js';
 
+//Компонент окна редактора сотрудника
 export default class CEmployeeChangeWindow {
     constructor() {
         this.view;
     }
 
+    //Инициализация компонента
     init() { 
     }
 
+    //Возвращение вебикс конфигурации компонента
     config(employee, positions) {
         return webix.ui(getEmployeeChangeWindow(employee, positions));
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             window : $$("employeeChangeWindow"),
             windowConfirmButton : $$("employeeChangeConfirmButton"),
@@ -27,6 +32,7 @@ export default class CEmployeeChangeWindow {
             form : $$("employeeChangeForm"),
         };
 
+        //Событие восстановления сотрудника
         this.view.windowRestoreButton.attachEvent('onItemClick', () => {
             let id = Number(this.getVal().employeeChangeId);
             employeeModel.restoreEmployee(id).then((result) => {
@@ -37,6 +43,7 @@ export default class CEmployeeChangeWindow {
             })
         })
 
+        //Событие увольнения сотрудника
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
             let id = Number(this.getVal().employeeChangeId);
             employeeModel.removeEmployee(id).then((result) => {
@@ -47,6 +54,7 @@ export default class CEmployeeChangeWindow {
             })
         })
 
+        //Событие изменения информации о сотруднике
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
             let newValue = this.getVal();
@@ -76,16 +84,19 @@ export default class CEmployeeChangeWindow {
             }            
         })
 
+        //Закрытие окна
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
             this.view.window.close();
         })
     }
 
+    //Метод получения значений из формы
     getVal() {
         return this.view.form.getValues();
     }
 
+    //Проверка правильности заполнения формы
     validation(employee) {
         let firstName = employee.employeeChangeFirstName;
         let lastName = employee.employeeChangeLastName;

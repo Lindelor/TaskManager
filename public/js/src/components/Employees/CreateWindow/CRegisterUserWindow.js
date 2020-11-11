@@ -4,20 +4,25 @@ import { Employee } from '../../../models/entities/employee.js';
 import {User} from '../../../models/entities/user.js';
 import getRegisterWindow from './RegisterUserWindow.js';
 
+//Компонент окна регистрации сотрудника
 export default class CRegisterUserWindow {
     constructor() {
         this.view;
     }
 
+    //Инициализация компонента
     init() { 
     }
 
+    //Возвращение вебикс конфигурации компонента
     config(positions) {
         return webix.ui(getRegisterWindow(positions));
     }
 
+    //Прикрепление обработчиков событий
     attachEvents() {
 
+        //инициализация используемых представлений
         this.view = {
             window : $$("registerWindow"),
             windowConfirmButton : $$("registerFormConfirm"),
@@ -25,6 +30,7 @@ export default class CRegisterUserWindow {
             form : $$("registerForm"),
         };
 
+        //Событие регистрации сотрудника
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
             let newValue = this.getVal();
@@ -42,16 +48,19 @@ export default class CRegisterUserWindow {
             }            
         })
 
+        //Закрытие окна
         this.view.windowCancelButton.attachEvent('onItemClick', () => {
             this.view.form.clear();
             this.view.window.close();
         })
     }
 
+    //Метод получения значений из формы
     getVal() {
         return this.view.form.getValues();
     }
 
+    //Валидация данных в форме
     validation(employee) {
         let firstName = employee.registerName;
         let lastName = employee.registerLastName;

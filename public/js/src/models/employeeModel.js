@@ -42,6 +42,7 @@ class EmployeeModel {
         })
     }
 
+    //получения ID+FIO всех тимлидов
     getTeamLeadsIdFIO(){
         return new Promise((resolve, reject) => {
             let employees = [];

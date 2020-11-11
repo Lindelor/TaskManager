@@ -1,4 +1,4 @@
-//Возвращает и показывает форму создания проекта
+//Возвращает вебикс конфигурацию формы создания проекта
 export default function getProjectCreateWindow(teamLeads) {
 	return {
 		view:"window",

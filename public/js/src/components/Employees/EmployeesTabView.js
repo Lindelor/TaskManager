@@ -1,12 +1,7 @@
-// возвращает webix конфигурацию таба сотрудников
+// возвращает webix конфигурацию таблицы сотрудников
 export default function getEmployeesTabView() {
-    return employeesTab(cells);
-}
-
-//Возвращает таблицу с сотрудниками
-function employeesTab(currentCells) {
     return (
-		{id: 'employeesTable', header: 'Сотрудники', view:'datatable', columns:currentCells,
+		{id: 'employeesTable', header: 'Сотрудники', view:'datatable', columns:cells,
         data:[]});
 }
 
