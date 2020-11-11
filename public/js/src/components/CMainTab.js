@@ -9,6 +9,7 @@ import employeeModel from '../models/employeeModel.js';
 import CTaskCreateWindow from './Tasks/CTaskCreateWindow.js';
 import CProjectCreateWindow from './Projects/CProjectCreateWindow.js';
 import CRegisterUserWindow from './Employees/CRegisterUserWindow.js';
+import CUserInfo from './UserInfo/CUserInfo.js';
 
 export default class CMainTab {
     constructor(currentEmployee, currentUser) {
@@ -46,11 +47,19 @@ export default class CMainTab {
             addTaskButton: $$("addTask"),
             addProjectButton: $$("addProject"),
             addUserButton: $$("registerUser"),
+            userInfoButton: $$("userButton"),
         };
 
         if (this.currentEmployee.position != POSITION.teamLead) {
             this.employeesTab.view.table.define("hidden", true);
         }
+
+        this.view.userInfoButton.attachEvent('onItemClick', () => {
+            let userInfoWindow = new CUserInfo(this.currentEmployee);
+            userInfoWindow.init();
+            userInfoWindow.config().show();
+            userInfoWindow.attachEvents();
+        })
 
         this.view.addTaskButton.attachEvent('onItemClick', () => {
             projectModel.getProjectsNames().then((projectsNames) => {
