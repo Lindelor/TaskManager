@@ -58,7 +58,7 @@ export default class CMainTab {
             userInfoButton: $$("userButton"),
         };
 
-        //добавление обработки таба сотрудников, если пользователь - тимлид
+        //Привязка тимлидских событий
         if (this.currentEmployee.position == POSITION.teamLead) {
             this.employeesTab.attachEvents();
             this.employeesTab.refreshTable();
