@@ -6,9 +6,9 @@ import { POSITION } from '../models/entities/employee.js';
 import projectModel from '../models/projectModel.js';
 import taskModel from '../models/taskModel.js';
 import employeeModel from '../models/employeeModel.js';
-import CTaskCreateWindow from './Tasks/CTaskCreateWindow.js';
-import CProjectCreateWindow from './Projects/CProjectCreateWindow.js';
-import CRegisterUserWindow from './Employees/CRegisterUserWindow.js';
+import CTaskCreateWindow from './Tasks/CreateWindow/CTaskCreateWindow.js';
+import CProjectCreateWindow from './Projects/CreateWindow/CProjectCreateWindow.js';
+import CRegisterUserWindow from './Employees/CreateWindow/CRegisterUserWindow.js';
 import CUserInfo from './UserInfo/CUserInfo.js';
 
 export default class CMainTab {

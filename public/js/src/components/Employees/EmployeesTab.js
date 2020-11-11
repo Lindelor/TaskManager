@@ -1,6 +1,6 @@
 import getEmployeesTabView from './EmployeesTabView.js';
 import employeeModel from '../../models/employeeModel.js';
-import CEmployeeChangeWindow from './CEmployeeChangeWindow.js';
+import CEmployeeChangeWindow from './ChangeWindow/CEmployeeChangeWindow.js';
 
 export default class EmployeesTab {
     constructor() {

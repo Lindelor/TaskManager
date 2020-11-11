@@ -1,7 +1,7 @@
 import getTasksView from './TasksTabView.js';
 import taskModel from '../../models/taskModel.js';
 import employeeModel from '../../models/employeeModel.js';
-import CTaskChangeWindow from './CTaskChangeWindow.js';
+import CTaskChangeWindow from './ChangeWindow/CTaskChangeWindow.js';
 import {POSITION} from '../../models/entities/employee.js';
 
 export default class TasksTab {

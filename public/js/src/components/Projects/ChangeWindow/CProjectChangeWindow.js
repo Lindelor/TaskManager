@@ -1,6 +1,6 @@
 import getChangeProjectWindow from './ProjectChangeWindow.js';
-import projectModel from '../../models/projectModel.js';
-import {POSITION} from '../../models/entities/employee.js';
+import projectModel from '../../../models/projectModel.js';
+import {POSITION} from '../../../models/entities/employee.js';
 
 export default class CProjectChangeWindow {
     constructor() {

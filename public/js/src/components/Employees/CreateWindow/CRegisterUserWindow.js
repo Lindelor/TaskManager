@@ -1,7 +1,7 @@
-import authModel from '../../models/authModel.js';
-import employeeModel from '../../models/employeeModel.js';
-import { Employee } from '../../models/entities/employee.js';
-import {User} from '../../models/entities/user.js';
+import authModel from '../../../models/authModel.js';
+import employeeModel from '../../../models/employeeModel.js';
+import { Employee } from '../../../models/entities/employee.js';
+import {User} from '../../../models/entities/user.js';
 import getRegisterWindow from './RegisterUserWindow.js';
 
 export default class CRegisterUserWindow {

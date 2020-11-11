@@ -1,7 +1,7 @@
 import getCreateTaskWindowView from './TaskCreateWindow.js';
-import taskModel from '../../models/taskModel.js';
-import {Task, TASK_STATUS} from '../../models/entities/task.js';
-import projectModel from '../../models/projectModel.js';
+import taskModel from '../../../models/taskModel.js';
+import {Task, TASK_STATUS} from '../../../models/entities/task.js';
+import projectModel from '../../../models/projectModel.js';
 
 export default class CTaskCreateWindow {
     constructor() {

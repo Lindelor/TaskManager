@@ -1,8 +1,8 @@
-import authModel from '../../models/authModel.js';
-import employeeModel from '../../models/employeeModel.js';
-import taskModel from '../../models/taskModel.js';
+import authModel from '../../../models/authModel.js';
+import employeeModel from '../../../models/employeeModel.js';
+import taskModel from '../../../models/taskModel.js';
 import getEmployeeChangeWindow from './EmployeeChangeWindow.js';
-import projectModel from '../../models/projectModel.js';
+import projectModel from '../../../models/projectModel.js';
 
 export default class CEmployeeChangeWindow {
     constructor() {

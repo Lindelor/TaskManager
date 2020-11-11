@@ -1,7 +1,7 @@
 import projectModel from '../../models/projectModel.js';
 import {POSITION} from '../../models/entities/employee.js';
 import {getProjectsTabView} from './ProjectsTabView.js';
-import CProjectChangeWindow from './CProjectChangeWindow.js';
+import CProjectChangeWindow from './ChangeWindow/CProjectChangeWindow.js';
 
 export default class ProjectsTab {
     constructor(currentEmployee) {

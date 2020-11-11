@@ -1,6 +1,6 @@
 import getProjectCreateWindow from './ProjectCreateWindow.js';
-import projectModel from '../../models/projectModel.js';
-import {Project} from '../../models/entities/project.js';
+import projectModel from '../../../models/projectModel.js';
+import {Project} from '../../../models/entities/project.js';
 
 export default class CProjectCreateWindow {
     constructor() {
