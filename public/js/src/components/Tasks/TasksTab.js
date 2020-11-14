@@ -36,13 +36,15 @@ export default class TasksTab {
             taskChangeWindow.init();
             let task = this.view.table.getItem(id);
 
-            employeeModel.getEmployeesIdFIO().then((employees) => {
+            employeeModel.getEmployees().then((employees) => {
                 taskModel.getTaskUrgencies().then((urgencies) => {
                     webix.ui(taskChangeWindow.config(task, employees, urgencies)).show();
                     taskChangeWindow.attachEvents();
                     this.taskChange = $$("taskChangeWindow");
                     this.taskChange.attachEvent('onDestruct', () => {
                         this.refreshTable();
+                        taskChangeWindow = null;
+                        this.taskChange = null;
                     })
                 })
             })

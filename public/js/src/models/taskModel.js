@@ -1,15 +1,9 @@
-import employeeModel from "./employeeModel.js";
 import {Task, TASK_STATUS, URGENCY} from "./entities/task.js";
-import projectModel from './projectModel.js';
 
 //Класс операций над задачами
 class TaskModel {
     constructor() {
         this.data = new Map();
-        this.data.set(1, new Task(1, "TaskA", "Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1 Bla-bla-bla1", "ProjectA", 4, 2, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.ASAP));
-        this.data.set(2, new Task(2, "TaskB", "Bla-bla-bla2", "ProjectA", 4, 5, '', TASK_STATUS.haveEmployee, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
-        this.data.set(3, new Task(3, "TaskC", "Bla-bla-bla3", "ProjectB", 1, 8, '', TASK_STATUS.inProgress, '11' + ' Ivanov Ivan Ivanovich', URGENCY.Low));
-        this.data.set(4, new Task(4, "TaskD", "Bla-bla-bla4", "ProjectB", 1, 2, 3, TASK_STATUS.done, '12' + ' Petrov Sergey Sergeevich', URGENCY.NVM));
     }
 	
 	// поолучение всех тасков
@@ -38,7 +32,7 @@ class TaskModel {
             let tasks = this.getEmployeeTasksById(employee.id);
 
             for (let entry of tasks) {
-                entry.employee = employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic;
+                entry.employee = employee;
                 this.data.set(entry.id, entry);
             }
 
@@ -50,16 +44,7 @@ class TaskModel {
     getEmployeeTasksById(employeeId) {
         let tasks = [];
         for (let entry of this.data.values()) {
-            let id = '';
-            for (let i =0; i < entry.employee.length; i++) {
-                if (entry.employee[i] == ' ') {
-                    break;
-                } else {
-                    id += entry.employee[i];
-                }
-            }
-
-            if (id == employeeId) {
+            if (entry.employee.id == employeeId) {
                 tasks.push(entry);
             }
         }
@@ -69,16 +54,13 @@ class TaskModel {
 
     //получение всех таск сотрудника по сотруднику
     getEmployeeTasks(employee) {
-        let employeeIdFIO = employee.id + ' ' + employee.lastName + ' ' + employee.firstName + ' ' + employee.patronymic;
         return new Promise((resolve, reject) => {
             let tasks = [];
-
             for (let entry of this.data.values()) {
-                if (entry.employee == employeeIdFIO) {
+                if (entry.employee == employee) {
                     tasks.push(entry);
                 }
             }
-
             resolve(tasks);
         })
     }
@@ -136,30 +118,20 @@ class TaskModel {
 
             let old = this.data.get(task.id);
             if (task.status == TASK_STATUS.reconciliation) {
-                projectModel.getTeamLeadIdFIOByProjectId(Number(task.projectId)).then((result) => {
-                    task.employee = result;
-                    this.data.set(task.id, task);
-                    resolve(this.data.get(task.id));
-                })
+                this.data.set(task.id, task);
+                resolve(this.data.get(task.id));
             } else if (old.status == TASK_STATUS.reconciliation) {
                 task.status = TASK_STATUS.haveEmployee;
-                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
-                    projectModel.addEmployeeToProject(result, task.projectId);
-                    task.end = '';
-                    task.estimated = '';
-                    console.log("kek");
-                    this.data.set(task.id, task);
-                    resolve(this.data.get(task.id));
-                })
+                task.end = '';
+                task.estimated = '';
+                this.data.set(task.id, task);
+                resolve(this.data.get(task.id));
             } else if(old.status == TASK_STATUS.fresh) {
                 task.status = TASK_STATUS.haveEmployee;
-                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
-                    projectModel.addEmployeeToProject(result, task.projectId);
-                    task.end = '';
-                    task.estimated = '';
-                    this.data.set(task.id, task);
-                    resolve(this.data.get(task.id));
-                })
+                task.end = '';
+                task.estimated = '';
+                this.data.set(task.id, task);
+                resolve(this.data.get(task.id));
             } else if (old.status == TASK_STATUS.haveEmployee) {
                 if (task.status == old.status) {
                     task.status = TASK_STATUS.inProgress;
@@ -174,14 +146,11 @@ class TaskModel {
                     task.status = TASK_STATUS.reconciliation;
                 }
             } else {
-                employeeModel.getEmployeeByIdFIO(task.employee).then((result) => {
-                    projectModel.addEmployeeToProject(result, task.projectId);
-                    task.end = '';
-                    task.estimated = '';
-                    task.status = TASK_STATUS.haveEmployee;
-                    this.data.set(task.id, task);
-                    resolve(this.data.get(task.id));
-                })
+                task.end = '';
+                task.estimated = '';
+                task.status = TASK_STATUS.haveEmployee;
+                this.data.set(task.id, task);
+                resolve(this.data.get(task.id));
             }
             
             this.data.set(task.id, task);

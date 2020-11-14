@@ -3,6 +3,7 @@ import taskModel from '../../../models/taskModel.js';
 import {TASK_STATUS} from '../../../models/entities/task.js';
 import projectModel from '../../../models/projectModel.js';
 import { POSITION } from '../../../models/entities/employee.js';
+import employeeModel from '../../../models/employeeModel.js';
 
 //Компонент окна изменения таски
 export default class CTaskChangeWindow {
@@ -40,27 +41,30 @@ export default class CTaskChangeWindow {
         //Событие изменения задачи
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
-            let val = this.getVal()
+            let val = this.view.form.getValues();
 
             taskModel.getTaskByID(Number(val.taskChangeId)).then((task) => {
                 projectModel.getProjectByName(val.taskChangeProjectName).then((newProject) => {
                     if (this.validation(val)) {
-                    task.description = val.taskChangeDescription;
-                    task.projectName = val.taskChangeProjectName;
-                    task.projectId = newProject.id;
-                    task.employee = val.taskChangeEmployee;
-                    task.end = Number(val.taskChangeFact);
-                    task.estimated = Number(val.taskChangeEstimated);
-                    if (this.currentEmployee.position == POSITION.teamLead) {
-                        task.urgency = val.taskChangeUrgency;
-                    }
-                    if (task.status == TASK_STATUS.reconciliation) {
-                        task.status = TASK_STATUS.fresh;
-                    }
-                    taskModel.updateTask(task).then((result) => {
-                        this.view.form.clear();
-                        this.view.window.close();
-                    });
+                        task.description = val.taskChangeDescription;
+                        task.projectName = val.taskChangeProjectName;
+                        task.projectId = newProject.id;
+                        employeeModel.getEmployeeById(Number(val.taskChangeEmployee)).then((empl) => {
+                            task.employee = empl;
+                            task.end = Number(val.taskChangeFact);
+                            task.estimated = Number(val.taskChangeEstimated);
+                            if (this.currentEmployee.position == POSITION.teamLead) {
+                                task.urgency = val.taskChangeUrgency;
+                            }
+                            if (task.status == TASK_STATUS.reconciliation) {
+                                task.status = TASK_STATUS.fresh;
+                            }
+                            taskModel.updateTask(task).then((result) => {
+                                projectModel.addEmployeeToProject(task.employee, newProject.id);
+                                this.view.form.clear();
+                                this.view.window.close();
+                            });
+                        })
                     }
                 })
             })        
@@ -68,12 +72,15 @@ export default class CTaskChangeWindow {
 
         //Отправка задачи на согласование
         this.view.windowReconButton.attachEvent('onItemClick', () => {
-            let val = this.getVal();
+            let val = this.view.form.getValues();
             taskModel.getTaskByID(Number(val.taskChangeId)).then((task) => {
                 task.status = TASK_STATUS.reconciliation;
-                taskModel.updateTask(task).then((result) => {
-                    this.view.form.clear();
-                    this.view.window.close();
+                projectModel.getTeamLeadByProjectId(task.projectId).then((resTeamLead) => {
+                    task.employee = resTeamLead;
+                    taskModel.updateTask(task).then((result) => {
+                        this.view.form.clear();
+                        this.view.window.close();
+                    })
                 })
             })
         })
@@ -86,7 +93,7 @@ export default class CTaskChangeWindow {
 
         //Удаление задачи
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
-            let id = Number(this.getVal().taskChangeId);
+            let id = Number(this.view.form.getValues().taskChangeId);
             taskModel.deleteTask(id).then((result) => {
                 this.view.form.clear();
                 this.view.window.close();
@@ -94,14 +101,9 @@ export default class CTaskChangeWindow {
         });
     }
 
-    //Получение данных из формы
-    getVal() {
-        return this.view.form.getValues();
-    }
-
     //Установка надписи на кнопке изменения в зависимости от статуса задачи
     setButtonVal() {
-        let status = this.getVal().taskChangeStatus;
+        let status = this.view.form.getValues().taskChangeStatus;
         if (status == TASK_STATUS.fresh) {
             this.view.windowConfirmButton.define({
                 value:"Назначить",

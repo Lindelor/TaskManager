@@ -16,7 +16,7 @@ export default class CEmployeeChangeWindow {
 
     //Возвращение вебикс конфигурации компонента
     config(employee, positions) {
-        return webix.ui(getEmployeeChangeWindow(employee, positions));
+        return getEmployeeChangeWindow(employee, positions);
     }
 
     //Прикрепление обработчиков событий
@@ -34,7 +34,7 @@ export default class CEmployeeChangeWindow {
 
         //Событие восстановления сотрудника
         this.view.windowRestoreButton.attachEvent('onItemClick', () => {
-            let id = Number(this.getVal().employeeChangeId);
+            let id = Number(this.view.form.getValues().employeeChangeId);
             employeeModel.restoreEmployee(id).then((result) => {
                 authModel.restoreUser(id).then((res) => {
                     this.view.form.clear();
@@ -45,7 +45,7 @@ export default class CEmployeeChangeWindow {
 
         //Событие увольнения сотрудника
         this.view.windowRemoveButton.attachEvent('onItemClick', () => {
-            let id = Number(this.getVal().employeeChangeId);
+            let id = Number(this.view.form.getValues().employeeChangeId);
             employeeModel.removeEmployee(id).then((result) => {
                 authModel.removeUser(id).then((res) => {
                     this.view.form.clear();
@@ -57,7 +57,7 @@ export default class CEmployeeChangeWindow {
         //Событие изменения информации о сотруднике
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
-            let newValue = this.getVal();
+            let newValue = this.view.form.getValues();
             
             if(this.validation(newValue)) {               
                 employeeModel.getEmployeeById(Number(newValue.employeeChangeId)).then((resultEmpl) => {
@@ -89,11 +89,6 @@ export default class CEmployeeChangeWindow {
             this.view.form.clear();
             this.view.window.close();
         })
-    }
-
-    //Метод получения значений из формы
-    getVal() {
-        return this.view.form.getValues();
     }
 
     //Проверка правильности заполнения формы

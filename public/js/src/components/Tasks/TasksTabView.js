@@ -1,4 +1,4 @@
-import {POSITION} from '../../models/entities/employee.js';
+import {POSITION, Employee} from '../../models/entities/employee.js';
 
 // возвращает webix конфигурацию таба задач
 export default function getTasksView(currentUser) {
@@ -11,7 +11,7 @@ export default function getTasksView(currentUser) {
         { id:"end", header:["Факт. время", {content:"textFilter"}], css:"rank", sort:"int", width:130},
         { id:"status", header:["Статус", {content:"selectFilter"}], css:"rank", sort:"string", width:160}];
     
-    let employeeCell = { id:"employee", header:["Сотрудник", {content:"textFilter"}], css:"rank", sort:"string", width:200};
+    let employeeCell = { id:"employee", template:"#employee.id# #employee.lastName# #employee.firstName# #employee.patronymic#", header:["Сотрудник", {content:"textFilter"}], css:"rank", sort:"string", width:200};
     
 	if (currentUser.position == POSITION.teamLead) {
         cells.push(employeeCell);

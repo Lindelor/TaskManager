@@ -33,12 +33,12 @@ export default class CTaskCreateWindow {
         //Событие создания задачи
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
-            let val = this.getVal()
+            let val = this.view.form.getValues();
             
             if(this.validation(val)) {               
 
                 projectModel.getProjectByName(val.addTaskProject).then((finalProject) => {
-                    let task = new Task(0, val.addTaskName, val.addTaskDescription, finalProject.name, finalProject.id, '', '', TASK_STATUS.fresh, '', val.addTaskUrgency);
+                    let task = new Task(0, val.addTaskName, val.addTaskDescription, finalProject.name, finalProject.id, '', '', TASK_STATUS.fresh, finalProject.teamLead, val.addTaskUrgency);
                     taskModel.createTask(task).then((result) => {
                         this.view.form.clear();
                         this.view.window.close();
@@ -53,11 +53,6 @@ export default class CTaskCreateWindow {
             this.view.form.clear();
             this.view.window.close();
         })
-    }
-
-    //Получение данных из формы
-    getVal() {
-        return this.view.form.getValues();
     }
 
     //Валидация данных в форме

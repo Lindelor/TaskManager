@@ -25,7 +25,7 @@ function getElems(task, employees, urgencies) {
     let elems = [{ view:"text", label:"ID", name:"taskChangeId", value:task.id, labelWidth:120, readonly:true},
         { view:"textarea", label:"Описание", name:"taskChangeDescription", value:task.description, height: 120, labelWidth:120},
         { view:"text", label:"Проект", name:"taskChangeProjectName", value:task.projectName, labelWidth:120, readonly:true},
-        { view:"select", label:"Сотрудник", options:employees, name:"taskChangeEmployee", value:task.employee, labelWidth:120},
+        { view:"richselect", label:"Сотрудник", name:"taskChangeEmployee", labelWidth:120, value:task.employee.id, suggest:{body: {template: "#id# #lastName# #firstName# #patronymic#", data: employees}}},
         { view:"text", label:"Статус", name:"taskChangeStatus", labelWidth:120, value:task.status, readonly:true},
         { view:"select", label:"Срочность", options:urgencies, name:"taskChangeUrgency", labelWidth:120, value: task.urgency},
         { view:"text", label:"Ожид. Время", name:"taskChangeEstimated", value:task.estimated, labelWidth:120},

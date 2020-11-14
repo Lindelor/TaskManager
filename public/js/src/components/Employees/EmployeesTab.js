@@ -38,6 +38,8 @@ export default class EmployeesTab {
                 this.changeWindow = $$('employeeChangeWindow');
                 this.changeWindow.attachEvent('onDestruct', () => {
                     this.refreshTable();
+                    employeeChangeWindow = null;
+                    this.changeWindow = null;
                 })
             })
         })

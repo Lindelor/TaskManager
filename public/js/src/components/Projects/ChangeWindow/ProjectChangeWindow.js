@@ -1,6 +1,6 @@
 //Функция возвращает webix конфигурацию окна редактора проекта
-export default function getChangeProjectWindow(project, currentEmployee, teamLeadsIdFIO) {
-    if ((currentEmployee.id + ' ' + currentEmployee.lastName + ' ' + currentEmployee.firstName + ' ' + currentEmployee.patronymic) == project.teamLeadIdFIO) {
+export default function getChangeProjectWindow(project, currentEmployee, teamLeads) {
+    if ((currentEmployee.id) == project.teamLead.id) {
         conBtn.hidden = false;
         remBtn.hidden = false;
     }
@@ -28,7 +28,7 @@ export default function getChangeProjectWindow(project, currentEmployee, teamLea
             elements:[
                 { view:"text", label:"ID", name:"projectChangeId", value:project.id, labelWidth:120, readonly:true},
                 { view:"textarea", label:"Описание", name:"projectChangeDescription", value:project.description, height: 120, labelWidth:120},
-                { view:"select", label:"ТимЛид", name:"projectChangeTeamLead", options:teamLeadsIdFIO, value:project.teamLeadIdFIO, labelWidth:120},
+                { view:"richselect", label:"ТимЛид", name:"projectChangeTeamLead", labelWidth:120, value:project.teamLead.id, suggest:{body: {template: "#id# #lastName# #firstName# #patronymic#", data: teamLeads}}},
                 { view:"template", template:"Сотрудники", type:"header"},
                 empTable,
                 { margin:5, cols:cells}

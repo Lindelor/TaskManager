@@ -22,58 +22,19 @@ class EmployeeModel {
         })
     }
 
-    //Получение массива из id + ФИО сотрудников
-    getEmployeesIdFIO() {
-        return new Promise((resolve, reject) => {
-            let employees = [];
-
-            for (let employee of this.data.values()) {
-                let patronymic;
-                if (employee.patronymic == null || employee.patronymic == '') {
-                    patronymic = '';
-                } else {
-                    patronymic = employee.patronymic;
-                }
-                employees.push(employee.id + ' ' + employee.lastName  + ' ' + employee.firstName + ' ' + patronymic);
-            }
-
-            resolve(employees);
-
-        })
-    }
-
-    //получения ID+FIO всех тимлидов
-    getTeamLeadsIdFIO(){
+    //получения всех тимлидов
+    getAllTeamLeads(){
         return new Promise((resolve, reject) => {
             let employees = [];
 
             for (let employee of this.data.values()) {
                 if (employee.position == POSITION.teamLead) {
-                    let patronymic;
-                    if (employee.patronymic == null || employee.patronymic == '') {
-                        patronymic = '';
-                    } else {
-                        patronymic = employee.patronymic;
-                    }
-                    employees.push(employee.id + ' ' + employee.lastName  + ' ' + employee.firstName + ' ' + patronymic);
+                    employees.push(employee);
                 }
             }
 
             resolve(employees);
         })
-    }
-
-    //Получение сотрудника из ID+FIO
-    getEmployeeByIdFIO(FIO) {
-        let id = '';
-        for (let i = 0; i < FIO.length; i++) {
-          if (FIO[i] == ' ') {
-            break;
-          } else {
-            id += FIO[i];
-          }
-        }
-        return this.getEmployeeById(Number(id));
     }
 
     //Получение сотрудника по его id

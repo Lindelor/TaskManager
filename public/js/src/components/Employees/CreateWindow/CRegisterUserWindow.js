@@ -33,7 +33,7 @@ export default class CRegisterUserWindow {
         //Событие регистрации сотрудника
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
-            let newValue = this.getVal();
+            let newValue = this.view.form.getValues();
             
             if(this.validation(newValue)) {               
 
@@ -53,11 +53,6 @@ export default class CRegisterUserWindow {
             this.view.form.clear();
             this.view.window.close();
         })
-    }
-
-    //Метод получения значений из формы
-    getVal() {
-        return this.view.form.getValues();
     }
 
     //Валидация данных в форме

@@ -85,6 +85,11 @@ export default class CMainTab {
             userInfoWindow.init();
             userInfoWindow.config().show();
             userInfoWindow.attachEvents();
+            this.infoWindow = $$("infoWindow");
+            this.infoWindow.attachEvent('onDestruct', () => {
+                userInfoWindow = null;
+                this.infoWindow = null;
+            })
         })
 
         //Вызов окна добавления задачи
@@ -98,6 +103,8 @@ export default class CMainTab {
                     this.addTaskWindow = $$("addTaskWindow");
                     this.addTaskWindow.attachEvent('onDestruct', () => {
                         this.tasksTab.refreshTable();
+                        taskCreateWindow = null;
+                        this.addTaskWindow = null;
                     })
                 });
             });
@@ -113,13 +120,15 @@ export default class CMainTab {
                 this.addEmployeeWindow = $$("registerWindow");
                 this.addEmployeeWindow.attachEvent('onDestruct', () => {
                     this.employeesTab.refreshTable();
+                    registerUserWindow = null;
+                    this.addEmployeeWindow = null;
                 })
             });
         })
 
         //Вызов окна добавления проекта
         this.view.addProjectButton.attachEvent('onItemClick', () => {
-            employeeModel.getTeamLeadsIdFIO().then((result) => {
+            employeeModel.getAllTeamLeads().then((result) => {
                 let projectCreateWindow = new CProjectCreateWindow();
                 projectCreateWindow.init();
                 projectCreateWindow.config(result).show();
@@ -127,6 +136,8 @@ export default class CMainTab {
                 this.addProjectWindow = $$("addProjectWindow");
                 this.addProjectWindow.attachEvent('onDestruct', () => {
                     this.projectsTab.refreshTable();
+                    projectCreateWindow = null;
+                    this.addProjectWindow = null;
                 })
             });
         })

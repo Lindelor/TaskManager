@@ -2,6 +2,7 @@ import projectModel from '../../models/projectModel.js';
 import {POSITION} from '../../models/entities/employee.js';
 import {getProjectsTabView} from './ProjectsTabView.js';
 import CProjectChangeWindow from './ChangeWindow/CProjectChangeWindow.js';
+import employeeModel from '../../models/employeeModel.js';
 
 //Компонент таба проектов
 export default class ProjectsTab {
@@ -31,15 +32,17 @@ export default class ProjectsTab {
 
         //вызов окна редактора проекта
         this.view.table.attachEvent('onItemClick', (id) => {
-            projectModel.getAllTeamLeadsIdFIO().then((result) => {
+            employeeModel.getAllTeamLeads().then((result) => {
                 let projectChangeWindow = new CProjectChangeWindow;
-                projectChangeWindow.init();
+                projectChangeWindow.init(this.currentEmployee);
                 let project = this.view.table.getItem(id);
-                webix.ui(projectChangeWindow.config(project, this.currentEmployee, result)).show();
+                webix.ui(projectChangeWindow.config(project, result)).show();
                 projectChangeWindow.attachEvents();
                 this.projectWindow = $$('projectChangeWindow');
                 this.projectWindow.attachEvent('onDestruct', () => {
                     this.refreshTable();
+                    projectChangeWindow = null;
+                    this.projectWindow = null;
                 })
 
             })

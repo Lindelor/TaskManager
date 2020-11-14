@@ -1,10 +1,10 @@
 // Project класс для представления сущности проекта
 export class Project {
-	constructor (id, name, description, teamLeadIdFIO, employees) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.teamLeadIdFIO = teamLeadIdFIO;
-		this.employees = employees;
+	constructor (id, name, description, teamLead, employees) {
+		this.id = id; // id
+		this.name = name; // название
+		this.description = description; // описание
+		this.teamLead = teamLead; // тимлид
+		this.employees = employees; // сотрудники
 	}
 }

@@ -1,6 +1,7 @@
 import getProjectCreateWindow from './ProjectCreateWindow.js';
 import projectModel from '../../../models/projectModel.js';
 import {Project} from '../../../models/entities/project.js';
+import employeeModel from '../../../models/employeeModel.js';
 
 //Компонент окна создания проекта
 export default class CProjectCreateWindow {
@@ -13,8 +14,8 @@ export default class CProjectCreateWindow {
     }
 
     //Возвращение вебикс конфигурации компонента
-    config(teamLeadsIDFIO) {
-        return webix.ui(getProjectCreateWindow(teamLeadsIDFIO));
+    config(teamLeads) {
+        return webix.ui(getProjectCreateWindow(teamLeads));
     }
 
     //Прикрепление обработчиков событий
@@ -31,14 +32,15 @@ export default class CProjectCreateWindow {
         //Событие создания проекта
         this.view.windowConfirmButton.attachEvent('onItemClick', () => {
 
-            let val = this.getVal();
+            let val = this.view.form.getValues();
             
             if(this.validation(val)) {               
-
-                let project = new Project(0, val.addProjectName, val.addProjectDescription, val.addProjectTeamLead, []);
-                projectModel.createProject(project).then((result) => {
-                    this.view.form.clear();
-                    this.view.window.close();
+                employeeModel.getEmployeeById(Number(val.addProjectTeamLead)).then((teamLead) => {
+                    let project = new Project(0, val.addProjectName, val.addProjectDescription, teamLead, []);
+                    projectModel.createProject(project).then((result) => {
+                        this.view.form.clear();
+                        this.view.window.close();
+                    })
                 })
             }            
         })
@@ -48,11 +50,6 @@ export default class CProjectCreateWindow {
             this.view.form.clear();
             this.view.window.close();
         })
-    }
-
-    //Получение данных из формы
-    getVal() {
-        return this.view.form.getValues();
     }
 
     //Валидация данных
