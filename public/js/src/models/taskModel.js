@@ -157,6 +157,18 @@ class TaskModel {
             resolve(this.data.get(task.id));
         })
     }
+
+    // удаление всех тасок проекта
+    deleteAllProjectTasks(projectId) {
+        return new Promise((resolve, reject) => {
+            this.getTaskByProjectId(projectId).then((tasks) => {
+                for (let task of tasks) {
+                    this.data.delete(task.id);
+                }
+                resolve("done");
+            })
+        })
+    }
 	
 	// удаление Таска
     deleteTask(taskId) {

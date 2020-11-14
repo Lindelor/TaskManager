@@ -1,6 +1,7 @@
 import getChangeProjectWindow from './ProjectChangeWindow.js';
 import projectModel from '../../../models/projectModel.js';
 import employeeModel from '../../../models/employeeModel.js';
+import taskModel from '../../../models/taskModel.js';
 
 //Компонент окна редактора проекта
 export default class CProjectChangeWindow {
@@ -36,8 +37,10 @@ export default class CProjectChangeWindow {
 
             let val = this.view.form.getValues();
             projectModel.removeProject(Number(val.projectChangeId)).then((res) => {
-                this.view.form.clear();
-                this.view.window.close();
+                taskModel.deleteAllProjectTasks(Number(val.projectChangeId)).then((result) => {
+                    this.view.form.clear();
+                    this.view.window.close();
+                })
             })
             
         })

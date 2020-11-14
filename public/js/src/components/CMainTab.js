@@ -75,6 +75,7 @@ export default class CMainTab {
                     this.view.addTaskButton.hide();
                     this.view.addProjectButton.hide();
                     this.view.addUserButton.show();
+                    this.employeesTab.refreshTable();
                 }
             })
         }
@@ -153,6 +154,7 @@ export default class CMainTab {
                 this.view.addTaskButton.hide();
                 this.view.addProjectButton.show();
                 this.view.addUserButton.hide();
+                this.projectsTab.refreshTable();
             }
         })
 
@@ -162,6 +164,7 @@ export default class CMainTab {
                 this.view.addTaskButton.show();
                 this.view.addProjectButton.hide();
                 this.view.addUserButton.hide();
+                this.tasksTab.refreshTable();
             }
         })
     }
