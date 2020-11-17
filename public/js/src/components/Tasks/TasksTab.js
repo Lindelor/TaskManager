@@ -40,11 +40,10 @@ export default class TasksTab {
                 taskModel.getTaskUrgencies().then((urgencies) => {
                     webix.ui(taskChangeWindow.config(task, employees, urgencies)).show();
                     taskChangeWindow.attachEvents();
-                    this.taskChange = $$("taskChangeWindow");
-                    this.taskChange.attachEvent('onDestruct', () => {
+                    taskChangeWindow.view.window.attachEvent('onDestruct', () => {
                         this.refreshTable();
+                        taskChangeWindow.view.window = null;
                         taskChangeWindow = null;
-                        this.taskChange = null;
                     })
                 })
             })

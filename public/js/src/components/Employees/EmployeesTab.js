@@ -35,11 +35,10 @@ export default class EmployeesTab {
                 employeeChangeWindow.init();
                 webix.ui(employeeChangeWindow.config(employee, positions)).show();
                 employeeChangeWindow.attachEvents();
-                this.changeWindow = $$('employeeChangeWindow');
-                this.changeWindow.attachEvent('onDestruct', () => {
+                employeeChangeWindow.view.window.attachEvent('onDestruct', () => {
                     this.refreshTable();
+                    employeeChangeWindow.view.window = null;
                     employeeChangeWindow = null;
-                    this.changeWindow = null;
                 })
             })
         })

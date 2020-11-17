@@ -86,10 +86,9 @@ export default class CMainTab {
             userInfoWindow.init();
             userInfoWindow.config().show();
             userInfoWindow.attachEvents();
-            this.infoWindow = $$("infoWindow");
-            this.infoWindow.attachEvent('onDestruct', () => {
+            userInfoWindow.view.window.attachEvent('onDestruct', () => {
+                userInfoWindow.view.window = null;
                 userInfoWindow = null;
-                this.infoWindow = null;
             })
         })
 
@@ -101,11 +100,10 @@ export default class CMainTab {
                     taskCreateWindow.init();
                     taskCreateWindow.config(projectsNames, urgencies).show();
                     taskCreateWindow.attachEvents();
-                    this.addTaskWindow = $$("addTaskWindow");
-                    this.addTaskWindow.attachEvent('onDestruct', () => {
+                    taskCreateWindow.view.window.attachEvent('onDestruct', () => {
                         this.tasksTab.refreshTable();
+                        taskCreateWindow.view.window = null;
                         taskCreateWindow = null;
-                        this.addTaskWindow = null;
                     })
                 });
             });
@@ -118,11 +116,10 @@ export default class CMainTab {
                 registerUserWindow.init();
                 registerUserWindow.config(result).show();
                 registerUserWindow.attachEvents();
-                this.addEmployeeWindow = $$("registerWindow");
-                this.addEmployeeWindow.attachEvent('onDestruct', () => {
+                registerUserWindow.view.window.attachEvent('onDestruct', () => {
                     this.employeesTab.refreshTable();
+                    registerUserWindow.view.window = null;
                     registerUserWindow = null;
-                    this.addEmployeeWindow = null;
                 })
             });
         })
@@ -134,11 +131,10 @@ export default class CMainTab {
                 projectCreateWindow.init();
                 projectCreateWindow.config(result).show();
                 projectCreateWindow.attachEvents();
-                this.addProjectWindow = $$("addProjectWindow");
-                this.addProjectWindow.attachEvent('onDestruct', () => {
+                projectCreateWindow.view.window.attachEvent('onDestruct', () => {
                     this.projectsTab.refreshTable();
+                    projectCreateWindow.view.window = null;
                     projectCreateWindow = null;
-                    this.addProjectWindow = null;
                 })
             });
         })

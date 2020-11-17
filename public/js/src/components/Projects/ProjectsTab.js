@@ -38,11 +38,10 @@ export default class ProjectsTab {
                 let project = this.view.table.getItem(id);
                 webix.ui(projectChangeWindow.config(project, result)).show();
                 projectChangeWindow.attachEvents();
-                this.projectWindow = $$('projectChangeWindow');
-                this.projectWindow.attachEvent('onDestruct', () => {
+                projectChangeWindow.view.window.attachEvent('onDestruct', () => {
                     this.refreshTable();
+                    projectChangeWindow.view.window = null;
                     projectChangeWindow = null;
-                    this.projectWindow = null;
                 })
 
             })
