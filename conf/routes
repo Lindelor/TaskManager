@@ -9,6 +9,54 @@ module:testrunner
 
 GET     /                                       App.Index
 
+GET     /user/employee                          CAuth.GetCurrentEmployee
+GET     /user/logout                            CAuth.Logout
+GET     /user/:id                               CAuth.GetById
+POST    /user/login                             CAuth.Login
+POST    /user/create                            CAuth.Create
+POST    /user/update                            CAuth.Update
+POST    /user/remove                            CAuth.Remove
+POST    /user/restore                           CAuth.Restore
+
+GET     /employee/all                           CEmployee.GetAll
+GET     /employee/:id                           CEmployee.GetById
+GET     /employee/allTeamleads                  CEmployee.getAllTeamleads
+POST    /employee/create                        CEmployee.Create
+POST    /employee/update                        CEmployee.Update
+POST    /employee/remove                        CEmployee.Remove
+POST    /employee/restore                       CEmployee.Restore
+
+GET     /position/all                           CPosition.GetAll
+
+GET     /status/all                             CStatus.GetAll
+
+GET     /urgency/all                            CUrgency.GetAll
+
+GET     /project/all                            CProject.GetAll
+GET     /project/:id                            CProject.GetById
+POST    /project/updateByEmployee               CProject.UpdateByEmployee
+GET     /project/byEmployee/:id                 CProject.GetEmployeesProjectsById
+GET     /project/teamlead/:id                   CProject.GetTeamleadProjectsById
+GET     /project/byproject/:id                  CProject.GetTeamleadByProjectId
+GET     /project/allByProject/:id               CProject.GetEmployeesByProjectId
+GET     /project/getLim/:id                     CProject.GetLimitedProjectsById
+POST    /project/update                         CProject.Update
+POST    /project/create                         CProject.Create
+POST    /project/remove                         CProject.Remove
+GET     /project/addempl/getNames               CProject.GetNames
+
+GET     /task/all                               CTask.GetAll
+GET     /task/:id                               CTask.GetById
+POST    /task/byEmployee/:id                    CTask.UpdateByEmployeeId
+GET     /task/allByEmployee/:id                 CTask.GetAllByEmployeeId
+GET     /task/byProject/:id                     CTask.GetByProjectId
+POST    /task/update                            CTask.Update
+POST    /task/create                            CTask.Create
+POST    /task/remove                            CTask.Remove
+POST    /task/removeByProject/:id               CTask.RemoveByProject
+
+
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
